@@ -1,11 +1,26 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "./assets/vite.svg";
+import heroImg from "./assets/hero.png";
+import "./App.css";
+import axios from "axios";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [apiStatus, setApiStatus] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const checkHealth = async () => {
+    try {
+      setLoading(true);
+
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/health`);
+      setApiStatus(res.data);
+    } catch (err) {
+      setApiStatus({ status: "error", message: `API not reachable: ${err}` });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -21,13 +36,16 @@ function App() {
             Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
           </p>
         </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
+        <button type="button" className="counter" onClick={checkHealth}>
+          Check API health
         </button>
+        {loading && <p>Checking API...</p>}
+
+        {apiStatus && (
+          <pre style={{ marginTop: "1rem" }}>
+            {JSON.stringify(apiStatus, null, 2)}
+          </pre>
+        )}
       </section>
 
       <div className="ticks"></div>
@@ -116,7 +134,7 @@ function App() {
       <div className="ticks"></div>
       <section id="spacer"></section>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
