@@ -3,7 +3,7 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "./assets/vite.svg";
 import heroImg from "./assets/hero.png";
 import "./App.css";
-import axios from "axios";
+import { api } from "./lib/api";
 
 function App() {
   const [apiStatus, setApiStatus] = useState(null);
@@ -13,7 +13,7 @@ function App() {
     try {
       setLoading(true);
 
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/health`);
+      const res = await api.get(`/health`);
       setApiStatus(res.data);
     } catch (err) {
       setApiStatus({ status: "error", message: `API not reachable: ${err}` });
