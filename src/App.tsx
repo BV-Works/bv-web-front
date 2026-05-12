@@ -1,22 +1,36 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "./assets/vite.svg";
-import heroImg from "./assets/hero.png";
-import "./App.css";
-import { api } from "./lib/api";
+import { useState } from 'react';
+import reactLogo from './assets/react.svg';
+import viteLogo from './assets/vite.svg';
+import heroImg from './assets/hero.png';
+import './App.css';
+
+import type { ApiResponse, HealthData } from './models/api.model';
+
+import { api } from './lib/api';
+import { parseApiError } from './lib/apiError';
 
 function App() {
-  const [apiStatus, setApiStatus] = useState(null);
+  const [apiStatus, setApiStatus] = useState<ApiResponse<HealthData> | null>(
+    null,
+  );
+
   const [loading, setLoading] = useState(false);
 
   const checkHealth = async () => {
     try {
       setLoading(true);
 
-      const res = await api.get(`/health`);
+      const res = await api.get<ApiResponse<HealthData>>('/health');
+
       setApiStatus(res.data);
-    } catch (err) {
-      setApiStatus({ status: "error", message: `API not reachable: ${err}` });
+    } catch (err: unknown) {
+      const { message, code } = parseApiError(err);
+
+      setApiStatus({
+        status: 'error',
+        message,
+        code,
+      });
     } finally {
       setLoading(false);
     }
@@ -42,7 +56,7 @@ function App() {
         {loading && <p>Checking API...</p>}
 
         {apiStatus && (
-          <pre style={{ marginTop: "1rem" }}>
+          <pre style={{ marginTop: '1rem' }}>
             {JSON.stringify(apiStatus, null, 2)}
           </pre>
         )}
