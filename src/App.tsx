@@ -20,7 +20,7 @@ function App() {
     try {
       setLoading(true);
 
-      const res = await api.get<ApiResponse<HealthData>>('/health');
+      const res = await api.get<ApiResponse<HealthData>>('system/health');
 
       setApiStatus(res.data);
     } catch (err: unknown) {
