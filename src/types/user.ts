@@ -5,12 +5,10 @@ export interface User {
 
   email: string;
 
-  password_hash: string;
-
   role: UserRole;
 
   is_active: boolean;
 
-  created_at: string;
-  updated_at: string;
+  created_at?: string;
+  updated_at?: string;
 }

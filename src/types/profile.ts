@@ -11,7 +11,9 @@ export interface Profile {
 
   slug: string;
 
-  bio: string | null;
+  bio_slug: string | null;
+
+  bio_web: string | null;
 
   avatar_url: string | null;
 
@@ -21,6 +23,6 @@ export interface Profile {
 
   position: number;
 
-  created_at: string;
-  updated_at: string;
+  created_at?: string;
+  updated_at?: string;
 }

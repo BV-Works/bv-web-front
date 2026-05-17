@@ -22,6 +22,6 @@ export interface Link {
 
   is_visible: boolean;
 
-  created_at: string;
-  updated_at: string;
+  created_at?: string;
+  updated_at?: string;
 }
