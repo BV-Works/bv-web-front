@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import type { Profile } from '@/types/profile';
+import type { Profile, ProfileType } from '@/types/profile';
 import type { Link } from '@/types/link';
 
 import type { CreateLinkPayload } from '@/types/api';
@@ -182,4 +182,76 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
       };
     }
   },
+}));
+
+
+interface PublicProfilesState {
+  profiles: Profile[];
+  isLoading: boolean;
+  error: string | null;
+
+  loadProfiles: (type: ProfileType) => Promise<void>;
+
+  getProfileBySlug: (
+    slug: string
+  ) => Promise<{ profile: Profile; links: Link[] } | null>;
+
+  clearError: () => void;
+}
+
+export const usePublicProfilesStore = create<PublicProfilesState>((set) => ({
+  profiles: [],
+  isLoading: false,
+  error: null,
+
+  // -------------------------
+  // LIST (TEAM / ARTIST)
+  // -------------------------
+  loadProfiles: async (type) => {
+    set({ isLoading: true, error: null });
+
+    try {
+      const profiles = await profileApi.getProfiles({
+        type,
+        is_public: true,
+      });
+
+      set({
+        profiles: profiles,
+        isLoading: false,
+      });
+    } catch (err) {
+      set({
+        isLoading: false,
+        error:
+          err instanceof ApiException
+            ? err.message
+            : 'Error loading profiles',
+      });
+    }
+  },
+
+  // -------------------------
+  // SINGLE PUBLIC PROFILE
+  // -------------------------
+  getProfileBySlug: async (slug) => {
+    try {
+      const profile = await profileApi.getProfileBySlug(slug);
+
+      const links = await profileApi.getLinksByProfile(profile.id);
+
+      return {
+        profile,
+        links: links.filter((l) => l.is_visible),
+      };
+    } catch (err) {
+      console.error(
+        err instanceof ApiException ? err.message : err
+      );
+
+      return null;
+    }
+  },
+
+  clearError: () => set({ error: null }),
 }));
