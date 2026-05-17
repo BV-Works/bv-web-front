@@ -1,4 +1,4 @@
-import type {  ApiError } from '@/types/api';
+import type { ApiError } from '@/types/api';
 
 // API EXCEPTION: Error tipado que conserva info del backend
 

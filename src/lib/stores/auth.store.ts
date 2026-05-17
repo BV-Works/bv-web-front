@@ -4,27 +4,20 @@ import { authApi } from '@/lib/api/auth.api';
 import type { User, UserRole } from '@/types/user';
 import { ApiException } from '@/lib/api/errors';
 
-
 interface AuthState {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
   initialized: boolean;
   // STATE
-  setUser: (
-    user: User | null
-  ) => void;
+  setUser: (user: User | null) => void;
   setLoading: (loading: boolean) => void;
-  // AUTH ACTIONS 
-  login: (
-    email: string,
-    password: string
-  ) => Promise<{ success: boolean; error?: string }>;
+  // AUTH ACTIONS
+  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
   checkAuth: () => Promise<void>;
   clearAuth: () => void;
 }
-
 
 export const useAuthStore = create<AuthState>()(
   persist(
@@ -33,24 +26,22 @@ export const useAuthStore = create<AuthState>()(
       isLoading: false,
       isAuthenticated: false,
       initialized: false,
-      // STATE 
-      setUser:
-        (user) => set({ user, isAuthenticated: !!user }),
+      // STATE
+      setUser: (user) => set({ user, isAuthenticated: !!user }),
       setLoading: (isLoading) => set({ isLoading }),
-      // AUTH 
-      login:
-        async (email, password) => {
-          try {
-            set({ isLoading: true });
-            const user = await authApi.login({ email, password });
-            set({ user, isAuthenticated: true, isLoading: false });
-            return { success: true };
-          } catch (err) {
-            const message = err instanceof ApiException ? err.message : 'Login failed';
-            set({ isLoading: false });
-            return { success: false, error: message };
-          }
-        },
+      // AUTH
+      login: async (email, password) => {
+        try {
+          set({ isLoading: true });
+          const user = await authApi.login({ email, password });
+          set({ user, isAuthenticated: true, isLoading: false });
+          return { success: true };
+        } catch (err) {
+          const message = err instanceof ApiException ? err.message : 'Login failed';
+          set({ isLoading: false });
+          return { success: false, error: message };
+        }
+      },
       logout: async () => {
         try {
           set({ isLoading: true });
@@ -79,11 +70,8 @@ export const useAuthStore = create<AuthState>()(
   )
 );
 
-
-// ROLE REDIRECTS 
-export function getRedirectPath(
-  role: UserRole
-): string {
+// ROLE REDIRECTS
+export function getRedirectPath(role: UserRole): string {
   switch (role) {
     case 'ADMIN':
       return '/app/users';

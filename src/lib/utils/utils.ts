@@ -1,5 +1,5 @@
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 /*
 |--------------------------------------------------------------------------
@@ -14,15 +14,11 @@ export function cn(...inputs: ClassValue[]) {
 
 // ROLES (SOURCE OF TRUTH: /types/user.ts)
 
-
-import type { UserRole } from "@/types/user";
+import type { UserRole } from '@/types/user';
 
 //Role guard genérico
 
-export function hasRole(
-  userRole: UserRole | undefined,
-  allowed: UserRole[]
-): boolean {
+export function hasRole(userRole: UserRole | undefined, allowed: UserRole[]): boolean {
   if (!userRole) return false;
   return allowed.includes(userRole);
 }
@@ -30,42 +26,36 @@ export function hasRole(
 // Shortcut UX: ADMIN check rápido
 
 export function isAdmin(userRole: UserRole | undefined): boolean {
-  return userRole === "ADMIN";
+  return userRole === 'ADMIN';
 }
 
 //PROFILE UTILS (SOURCE OF TRUTH: /types/profile.ts)
 
-
-import type { ProfileType } from "@/types/profile";
+import type { ProfileType } from '@/types/profile';
 
 // Guard helper para tipos de perfil
 
 export function isArtistProfile(type: ProfileType | undefined): boolean {
-  return type === "ARTIST";
+  return type === 'ARTIST';
 }
 
 export function isTeamProfile(type: ProfileType | undefined): boolean {
-  return type === "TEAM";
+  return type === 'TEAM';
 }
 
 // SLUG UTILS (profiles)
-
 
 export function toSlug(value: string): string {
   return value
     .toLowerCase()
     .trim()
-    .replace(/[\s\W-]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+    .replace(/[\s\W-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }
 
 //  DEBOUNCE (UI / search / live preview)
 
-
-export function debounce<T extends (...args: unknown[]) => void>(
-  fn: T,
-  delay = 300
-) {
+export function debounce<T extends (...args: unknown[]) => void>(fn: T, delay = 300) {
   let timeout: ReturnType<typeof setTimeout>;
 
   return (...args: Parameters<T>) => {

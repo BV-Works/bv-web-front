@@ -21,7 +21,7 @@ interface ProfileState {
   setLoading: (loading: boolean) => void;
   setDirty: (dirty: boolean) => void;
 
-  // EDITING (V0 COMPAT)
+  // EDITING
   updateProfile: (updates: Partial<Profile>) => void;
 
   addLink: (data: CreateLinkPayload) => Promise<void>;
@@ -51,9 +51,7 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
 
   setDirty: (isDirty) => set({ isDirty }),
 
-  // -----------------------
-  // LOCAL EDITS (V0 STYLE)
-  // -----------------------
+  // LOCAL EDITS (only update local state, mark as dirty, actual API calls in saveChanges)
 
   updateProfile: (updates) => {
     const profile = get().profile;
@@ -95,9 +93,7 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
     set({ links, isDirty: true });
   },
 
-  // -----------------------
   // LOADERS
-  // -----------------------
 
   loadProfile: async (userId) => {
     set({ isLoading: true });
@@ -134,9 +130,7 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
     }
   },
 
-  // -----------------------
-  // SAVE (V0 STRATEGY)
-  // -----------------------
+  // SAVE (save all form at the same time strategy, v0 style)
 
   saveChanges: async () => {
     const { profile, links } = get();

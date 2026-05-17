@@ -1,12 +1,14 @@
 import { api } from './api';
-import { unwrapResponse , unwrapPaginated} from './unwrap';
+import { unwrapResponse, unwrapPaginated } from './unwrap';
 
-import type { ApiResponse, PaginatedResponse, CreateUserPayload, UpdateUserPayload } from '@/types/api';
+import type {
+  ApiResponse,
+  PaginatedResponse,
+  CreateUserPayload,
+  UpdateUserPayload,
+} from '@/types/api';
 
 import type { User } from '@/types/user';
-
-
-
 
 export const usersApi = {
   getUsers: async (): Promise<User[]> => {
