@@ -5,6 +5,11 @@ export const metadata: Metadata = {
   title: 'Bajo Vigilancia - Musica & Design',
   description:
     'Servicios de Mezcla, Mastering y Diseño Gráfico online. Estudio de Grabación en Asturias.',
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+  },
   icons: {
     icon: '/favicon.svg',
     apple: '/apple-touch-icon.png',
