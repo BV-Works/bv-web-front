@@ -2,3 +2,17 @@ node_modules
 dist
 build
 coverage
+
+.next
+out
+.vercel
+
+# env files
+.env
+.env.*
+!.env.example
+
+# lock files (no necesario formatear nunca)
+package-lock.json
+pnpm-lock.yaml
+yarn.lock

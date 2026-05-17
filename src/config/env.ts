@@ -1,3 +1,9 @@
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+if (!apiUrl) {
+  throw new Error('Missing NEXT_PUBLIC_API_URL');
+}
+
 export const env = {
-  apiUrl: import.meta.env.VITE_API_URL,
+  apiUrl,
 };
