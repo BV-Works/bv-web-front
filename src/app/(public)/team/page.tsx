@@ -1,16 +1,16 @@
-'use client'
+'use client';
 
-import { useEffect } from 'react'
-import { ProfileCarousel } from '@/components/profile/profile-carousel'
-import { Skeleton } from '@/components/ui/skeleton'
-import { usePublicProfilesStore } from '@/lib/stores/profiles.store'
+import { useEffect } from 'react';
+import { ProfileCarousel } from '@/components/profile/profile-carousel';
+import { Skeleton } from '@/components/ui/skeleton';
+import { usePublicProfilesStore } from '@/lib/stores/profiles.store';
 
 export default function TeamPage() {
-  const { profiles, isLoading, loadProfiles } = usePublicProfilesStore()
+  const { profiles, isLoading, loadProfiles } = usePublicProfilesStore();
 
   useEffect(() => {
-    loadProfiles('TEAM')
-  }, [loadProfiles])
+    loadProfiles('TEAM');
+  }, [loadProfiles]);
 
   return (
     <div className="py-12">
@@ -44,5 +44,5 @@ export default function TeamPage() {
         )}
       </div>
     </div>
-  )
+  );
 }

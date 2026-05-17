@@ -1,8 +1,8 @@
-import Link from 'next/link'
-import { ArrowRight, Music, Users, Mic2 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { PublicHeader } from '@/components/layout/public-header'
-import { PublicFooter } from '@/components/layout/public-footer'
+import Link from 'next/link';
+import { ArrowRight, Music, Users, Mic2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { PublicHeader } from '@/components/layout/public-header';
+import { PublicFooter } from '@/components/layout/public-footer';
 
 export default function HomePage() {
   return (
@@ -18,8 +18,8 @@ export default function HomePage() {
               <span className="text-muted-foreground">musical profiles</span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground text-pretty">
-              Create your artist profile, share your music links, and connect with your audience. 
-              A simple and elegant way to manage your online presence.
+              Create your artist profile, share your music links, and connect with your audience. A
+              simple and elegant way to manage your online presence.
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Button asChild size="lg">
@@ -29,9 +29,7 @@ export default function HomePage() {
                 </Link>
               </Button>
               <Button asChild variant="outline" size="lg">
-                <Link href="/team">
-                  View Team
-                </Link>
+                <Link href="/team">View Team</Link>
               </Button>
             </div>
           </div>
@@ -94,5 +92,5 @@ export default function HomePage() {
       </main>
       <PublicFooter />
     </div>
-  )
+  );
 }

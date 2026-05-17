@@ -184,7 +184,6 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
   },
 }));
 
-
 interface PublicProfilesState {
   profiles: Profile[];
   isLoading: boolean;
@@ -192,9 +191,7 @@ interface PublicProfilesState {
 
   loadProfiles: (type: ProfileType) => Promise<void>;
 
-  getProfileBySlug: (
-    slug: string
-  ) => Promise<{ profile: Profile; links: Link[] } | null>;
+  getProfileBySlug: (slug: string) => Promise<{ profile: Profile; links: Link[] } | null>;
 
   clearError: () => void;
 }
@@ -223,10 +220,7 @@ export const usePublicProfilesStore = create<PublicProfilesState>((set) => ({
     } catch (err) {
       set({
         isLoading: false,
-        error:
-          err instanceof ApiException
-            ? err.message
-            : 'Error loading profiles',
+        error: err instanceof ApiException ? err.message : 'Error loading profiles',
       });
     }
   },
@@ -245,9 +239,7 @@ export const usePublicProfilesStore = create<PublicProfilesState>((set) => ({
         links: links.filter((l) => l.is_visible),
       };
     } catch (err) {
-      console.error(
-        err instanceof ApiException ? err.message : err
-      );
+      console.error(err instanceof ApiException ? err.message : err);
 
       return null;
     }
