@@ -43,7 +43,7 @@ export interface CreateUserPayload {
   email: string;
   password: string;
   role: UserRole;
-  is_active: boolean;
+  is_active?: boolean;
 }
 
 export interface UpdateUserPayload {
@@ -54,7 +54,7 @@ export interface UpdateUserPayload {
 
 export interface CreateProfilePayload {
   display_name: string;
-  slug: string;
+  slug?: string;
   profile_type: ProfileType;
   bio_web?: string;
   bio_slug?: string;

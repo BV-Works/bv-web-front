@@ -34,11 +34,11 @@ export const useAuthStore = create<AuthState>()(
         try {
           set({ isLoading: true });
           const user = await authApi.login({ email, password });
-          set({ user, isAuthenticated: true, isLoading: false });
+          set({ user, isAuthenticated: true, isLoading: false, initialized: true });
           return { success: true };
         } catch (err) {
           const message = err instanceof ApiException ? err.message : 'Login failed';
-          set({ isLoading: false });
+          set({ isLoading: false, user: null, isAuthenticated: false, initialized: true });
           return { success: false, error: message };
         }
       },
@@ -47,7 +47,7 @@ export const useAuthStore = create<AuthState>()(
           set({ isLoading: true });
           await authApi.logout();
         } finally {
-          set({ user: null, isAuthenticated: false, isLoading: false });
+          set({ user: null, isAuthenticated: false, isLoading: false, initialized: true });
         }
       },
       checkAuth: async () => {
@@ -60,7 +60,7 @@ export const useAuthStore = create<AuthState>()(
         }
       },
       clearAuth: () => {
-        set({ user: null, isAuthenticated: false });
+        set({ user: null, isAuthenticated: false, initialized: true });
       },
     }),
     {

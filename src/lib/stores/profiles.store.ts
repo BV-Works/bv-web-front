@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import type { Profile, ProfileType } from '@/types/profile';
 import type { Link } from '@/types/link';
 
-import type { CreateLinkPayload } from '@/types/api';
+import type { ApiResponse, CreateLinkPayload, CreateProfilePayload } from '@/types/api';
 
 import { profileApi } from '@/lib/api/profiles.api';
 import { ApiException } from '@/lib/api/errors';
@@ -30,9 +30,11 @@ interface ProfileState {
   reorderLinks: (links: Link[]) => void;
 
   // API
-  loadProfile: (userId: string) => Promise<void>;
+  loadProfile: (profileId: string) => Promise<void>;
+  loadProfileByUserId: (userId: string) => Promise<void>;
   loadLinks: (profileId: string) => Promise<void>;
 
+  createProfileForUser: (displayName: string, profileType: ProfileType) => Promise<Profile>;
   saveChanges: () => Promise<{ success: boolean; error?: string }>;
 }
 
@@ -95,11 +97,32 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
 
   // LOADERS
 
-  loadProfile: async (userId) => {
+  loadProfile: async (profileId) => {
     set({ isLoading: true });
 
     try {
-      const profile = await profileApi.getProfileById(userId);
+      const profile = await profileApi.getProfileById(profileId);
+
+      set({
+        profile,
+        isLoading: false,
+        isDirty: false,
+      });
+    } catch (err) {
+      set({ isLoading: false });
+
+      if (err instanceof ApiException) {
+        console.error(err.message);
+      }
+    }
+  },
+
+  // loadProfileByUserId
+  loadProfileByUserId: async (userId) => {
+    set({ isLoading: true });
+
+    try {
+      const profile = await profileApi.getProfileByUserId(userId);
 
       set({
         profile,
@@ -127,6 +150,41 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
       });
     } catch (err) {
       set({ isLoading: false });
+      if (err instanceof ApiException) {
+        console.error(err.message);
+      }
+    }
+  },
+
+  // CREATE PROFILE + LINKS (for new profile flow, not used in edit flow)
+  createProfileForUser: async (displayName, profileType) => {
+    set({ isLoading: true });
+
+    try {
+      const payload: CreateProfilePayload = {
+        display_name: displayName,
+        profile_type: profileType,
+        is_public: false,
+        position: 999,
+        bio_web: '',
+        bio_slug: '',
+        avatar_url: '',
+        secondary_image_url: '',
+      };
+
+      const newProfile = await profileApi.createProfile(payload);
+
+      set({
+        profile: newProfile,
+        links: [],
+        isLoading: false,
+        isDirty: false,
+      });
+
+      return newProfile;
+    } catch (err) {
+      set({ isLoading: false });
+      throw err;
     }
   },
 
