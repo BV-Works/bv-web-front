@@ -232,11 +232,11 @@ export const usePublicProfilesStore = create<PublicProfilesState>((set) => ({
     try {
       const profile = await profileApi.getProfileBySlug(slug);
 
-      const links = await profileApi.getLinksByProfile(profile.id);
+      // const links = await profileApi.getLinksByProfile(profile.id);
 
       return {
         profile,
-        links: links.filter((l) => l.is_visible),
+        links: profile?.links?.filter((l) => l.is_visible) || [],
       };
     } catch (err) {
       console.error(err instanceof ApiException ? err.message : err);
