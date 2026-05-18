@@ -10,7 +10,7 @@ import type {
   UpdateLinkPayload,
 } from '@/types/api';
 
-import type { Profile, ProfileType } from '@/types/profile';
+import type { Profile, ProfileType, PublicProfile } from '@/types/profile';
 import type { Link } from '@/types/link';
 
 export const profileApi = {
@@ -41,8 +41,8 @@ export const profileApi = {
     return unwrapResponse(res.data);
   },
 
-  getProfileBySlug: async (slug: string): Promise<Profile> => {
-    const res = await api.get<ApiResponse<Profile>>(`/profiles/public/${slug}`);
+  getProfileBySlug: async (slug: string): Promise<PublicProfile> => {
+    const res = await api.get<ApiResponse<PublicProfile>>(`/profiles/public/${slug}`);
 
     return unwrapResponse(res.data);
   },
