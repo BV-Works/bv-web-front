@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import type { Profile, ProfileType } from '@/types/profile';
 import type { Link } from '@/types/link';
 
-import type { ApiResponse, CreateLinkPayload, CreateProfilePayload } from '@/types/api';
+import type { CreateLinkPayload, CreateProfilePayload } from '@/types/api';
 
 import { profileApi } from '@/lib/api/profiles.api';
 import { ApiException } from '@/lib/api/errors';
@@ -98,19 +98,25 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
   // LOADERS
 
   loadProfile: async (profileId) => {
-    set({ isLoading: true });
-
+    set({
+      isLoading: true,
+      links: [],
+    });
     try {
       const profile = await profileApi.getProfileById(profileId);
-
+      const links = await profileApi.getLinksByProfile(profile.id);
       set({
         profile,
+        links,
         isLoading: false,
         isDirty: false,
       });
     } catch (err) {
-      set({ isLoading: false });
-
+      set({
+        isLoading: false,
+        profile: null,
+        links: [],
+      });
       if (err instanceof ApiException) {
         console.error(err.message);
       }
@@ -119,18 +125,27 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
 
   // loadProfileByUserId
   loadProfileByUserId: async (userId) => {
-    set({ isLoading: true });
+    set({
+      isLoading: true,
+      links: [], // limpiar links anteriores
+    });
 
     try {
       const profile = await profileApi.getProfileByUserId(userId);
+      const links = await profileApi.getLinksByProfile(profile.id);
 
       set({
         profile,
+        links,
         isLoading: false,
         isDirty: false,
       });
     } catch (err) {
-      set({ isLoading: false });
+      set({
+        isLoading: false,
+        profile: null,
+        links: [],
+      });
 
       if (err instanceof ApiException) {
         console.error(err.message);
@@ -168,8 +183,8 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
         position: 999,
         bio_web: '',
         bio_slug: '',
-        avatar_url: '',
-        secondary_image_url: '',
+        avatar_url: undefined,
+        secondary_image_url: undefined,
       };
 
       const newProfile = await profileApi.createProfile(payload);
