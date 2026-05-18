@@ -1,41 +1,41 @@
-'use client'
+'use client';
 
-import { useEffect, useState } from 'react'
-import { notFound } from 'next/navigation'
-import { LinktreeView } from '@/components/profile/linktree-view'
-import { Skeleton } from '@/components/ui/skeleton'
-import { usePublicProfilesStore } from '@/lib/stores/profiles.store'
-import type { Profile, Link } from '@/types'
+import { useEffect, useState } from 'react';
+import { notFound } from 'next/navigation';
+import { LinktreeView } from '@/components/profile/linktree-view';
+import { Skeleton } from '@/components/ui/skeleton';
+import { usePublicProfilesStore } from '@/lib/stores/profiles.store';
+import type { Profile, Link } from '@/types';
 
 interface TeamProfilePageProps {
-  params: Promise<{ slug: string }>
+  params: Promise<{ slug: string }>;
 }
 
 export default function TeamProfilePage({ params }: TeamProfilePageProps) {
-  const { getProfileBySlug } = usePublicProfilesStore()
-  const [isLoading, setIsLoading] = useState(true)
-  const [profile, setProfile] = useState<Profile | null>(null)
-  const [links, setLinks] = useState<Link[]>([])
-  const [slug, setSlug] = useState<string>('')
+  const { getProfileBySlug } = usePublicProfilesStore();
+  const [isLoading, setIsLoading] = useState(true);
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [links, setLinks] = useState<Link[]>([]);
+  const [slug, setSlug] = useState<string>('');
 
   useEffect(() => {
-    params.then(p => setSlug(p.slug))
-  }, [params])
+    params.then((p) => setSlug(p.slug));
+  }, [params]);
 
   useEffect(() => {
-    if (!slug) return
-    
+    if (!slug) return;
+
     async function loadProfile() {
-      setIsLoading(true)
-      const data = await getProfileBySlug(slug)
+      setIsLoading(true);
+      const data = await getProfileBySlug(slug);
       if (data) {
-        setProfile(data.profile)
-        setLinks(data.links)
+        setProfile(data.profile);
+        setLinks(data.links);
       }
-      setIsLoading(false)
+      setIsLoading(false);
     }
-    loadProfile()
-  }, [slug, getProfileBySlug])
+    loadProfile();
+  }, [slug, getProfileBySlug]);
 
   if (isLoading) {
     return (
@@ -53,12 +53,12 @@ export default function TeamProfilePage({ params }: TeamProfilePageProps) {
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   if (!profile) {
-    notFound()
+    notFound();
   }
 
-  return <LinktreeView profile={profile} links={links} />
+  return <LinktreeView profile={profile} links={links} />;
 }

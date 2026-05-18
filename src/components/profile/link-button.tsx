@@ -1,11 +1,11 @@
-import { ExternalLink } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils/utils'
-import type { Link, LinkPlatform } from '@/types'
+import { ExternalLink } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils/utils';
+import type { Link, LinkPlatform } from '@/types';
 
 interface LinkButtonProps {
-  link: Link
-  className?: string
+  link: Link;
+  className?: string;
 }
 
 const platformColors: Record<LinkPlatform, string> = {
@@ -16,7 +16,7 @@ const platformColors: Record<LinkPlatform, string> = {
   applemusic: 'hover:bg-[#FA233B]/10 hover:border-[#FA233B]/50',
   twitch: 'hover:bg-[#9146FF]/10 hover:border-[#9146FF]/50',
   custom: 'hover:bg-primary/10 hover:border-primary/50',
-}
+};
 
 const platformIcons: Record<LinkPlatform, string> = {
   spotify: 'Spotify',
@@ -26,7 +26,7 @@ const platformIcons: Record<LinkPlatform, string> = {
   applemusic: 'Apple Music',
   twitch: 'Twitch',
   custom: 'Link',
-}
+};
 
 export function LinkButton({ link, className }: LinkButtonProps) {
   return (
@@ -48,9 +48,9 @@ export function LinkButton({ link, className }: LinkButtonProps) {
       </span>
       <ExternalLink className="h-4 w-4 text-muted-foreground" />
     </a>
-  )
+  );
 }
 
 export function getPlatformLabel(platform: LinkPlatform): string {
-  return platformIcons[platform]
+  return platformIcons[platform];
 }

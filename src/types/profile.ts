@@ -1,4 +1,4 @@
-import { Link } from "./link";
+import { Link } from './link';
 
 export type ProfileType = 'TEAM' | 'ARTIST';
 
@@ -28,7 +28,6 @@ export interface Profile {
   created_at?: string;
   updated_at?: string;
 }
-
 
 export interface PublicProfile {
   id: string;
