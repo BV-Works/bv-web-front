@@ -1,5 +1,5 @@
 'use client';
-export const runtime = 'edge'
+export const runtime = 'edge';
 import { useEffect, useState } from 'react';
 import { notFound } from 'next/navigation';
 import { LinktreeView } from '@/components/profile/linktree-view';

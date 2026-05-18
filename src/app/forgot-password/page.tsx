@@ -1,27 +1,27 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import Link from 'next/link'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Spinner } from '@/components/ui/spinner'
+import { useState } from 'react';
+import Link from 'next/link';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Spinner } from '@/components/ui/spinner';
 
 const schema = z.object({
   email: z.string().email('Please enter a valid email'),
-})
+});
 
-type FormData = z.infer<typeof schema>
+type FormData = z.infer<typeof schema>;
 
 export default function ForgotPasswordPage() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [isSuccess, setIsSuccess] = useState(false)
-  const [cooldown, setCooldown] = useState(0)
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [cooldown, setCooldown] = useState(0);
 
   const {
     register,
@@ -29,29 +29,29 @@ export default function ForgotPasswordPage() {
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
-  })
+  });
 
   const onSubmit = async (data: FormData) => {
-    setIsLoading(true)
-    
+    setIsLoading(true);
+
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    
-    setIsLoading(false)
-    setIsSuccess(true)
-    
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    setIsLoading(false);
+    setIsSuccess(true);
+
     // Start cooldown timer
-    setCooldown(60)
+    setCooldown(60);
     const interval = setInterval(() => {
-      setCooldown(prev => {
+      setCooldown((prev) => {
         if (prev <= 1) {
-          clearInterval(interval)
-          return 0
+          clearInterval(interval);
+          return 0;
         }
-        return prev - 1
-      })
-    }, 1000)
-  }
+        return prev - 1;
+      });
+    }, 1000);
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
@@ -69,7 +69,8 @@ export default function ForgotPasswordPage() {
             <div className="space-y-4">
               <Alert>
                 <AlertDescription>
-                  If an account exists with that email, you will receive password reset instructions shortly.
+                  If an account exists with that email, you will receive password reset instructions
+                  shortly.
                 </AlertDescription>
               </Alert>
 
@@ -92,9 +93,7 @@ export default function ForgotPasswordPage() {
                   placeholder="email@example.com"
                   {...register('email')}
                 />
-                {errors.email && (
-                  <p className="text-sm text-destructive">{errors.email.message}</p>
-                )}
+                {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
               </div>
 
               <Button type="submit" className="w-full" disabled={isLoading}>
@@ -112,5 +111,5 @@ export default function ForgotPasswordPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

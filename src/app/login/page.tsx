@@ -1,30 +1,30 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Spinner } from '@/components/ui/spinner'
-import { useAuthStore, getRedirectPath } from '@/lib/stores/auth.store'
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Spinner } from '@/components/ui/spinner';
+import { useAuthStore, getRedirectPath } from '@/lib/stores/auth.store';
 
 const schema = z.object({
   email: z.string().email('Please enter a valid email'),
   password: z.string().min(1, 'Password is required'),
-})
+});
 
-type FormData = z.infer<typeof schema>
+type FormData = z.infer<typeof schema>;
 
 export default function LoginPage() {
-  const router = useRouter()
-  const { login, isLoading } = useAuthStore()
-  const [error, setError] = useState<string | null>(null)
+  const router = useRouter();
+  const { login, isLoading } = useAuthStore();
+  const [error, setError] = useState<string | null>(null);
 
   const {
     register,
@@ -32,31 +32,29 @@ export default function LoginPage() {
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
-  })
+  });
 
   const onSubmit = async (data: FormData) => {
-    setError(null)
-    const result = await login(data.email, data.password)
-    
+    setError(null);
+    const result = await login(data.email, data.password);
+
     if (!result.success) {
-      setError(result.error || 'Login failed')
-      return
+      setError(result.error || 'Login failed');
+      return;
     }
 
-    const user = useAuthStore.getState().user
+    const user = useAuthStore.getState().user;
     if (user) {
-      router.push(getRedirectPath(user.role))
+      router.push(getRedirectPath(user.role));
     }
-  }
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
       <Card className="w-full max-w-sm">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-semibold">Log in</CardTitle>
-          <CardDescription>
-            Enter your credentials to access your account
-          </CardDescription>
+          <CardDescription>Enter your credentials to access your account</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -74,9 +72,7 @@ export default function LoginPage() {
                 placeholder="email@example.com"
                 {...register('email')}
               />
-              {errors.email && (
-                <p className="text-sm text-destructive">{errors.email.message}</p>
-              )}
+              {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
             </div>
 
             <div className="space-y-2">
@@ -89,11 +85,7 @@ export default function LoginPage() {
                   Forgot password?
                 </Link>
               </div>
-              <Input
-                id="password"
-                type="password"
-                {...register('password')}
-              />
+              <Input id="password" type="password" {...register('password')} />
               {errors.password && (
                 <p className="text-sm text-destructive">{errors.password.message}</p>
               )}
@@ -113,5 +105,5 @@ export default function LoginPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

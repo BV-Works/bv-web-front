@@ -1,32 +1,34 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Spinner } from '@/components/ui/spinner'
+import { useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Spinner } from '@/components/ui/spinner';
 
-const schema = z.object({
-  password: z.string().min(6, 'Password must be at least 6 characters'),
-  confirmPassword: z.string().min(1, 'Please confirm your password'),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ['confirmPassword'],
-})
+const schema = z
+  .object({
+    password: z.string().min(6, 'Password must be at least 6 characters'),
+    confirmPassword: z.string().min(1, 'Please confirm your password'),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword'],
+  });
 
-type FormData = z.infer<typeof schema>
+type FormData = z.infer<typeof schema>;
 
 export default function ResetPasswordPage() {
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
-  const [isSuccess, setIsSuccess] = useState(false)
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const {
     register,
@@ -34,22 +36,22 @@ export default function ResetPasswordPage() {
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
-  })
+  });
 
   const onSubmit = async (data: FormData) => {
-    setIsLoading(true)
-    
+    setIsLoading(true);
+
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    
-    setIsLoading(false)
-    setIsSuccess(true)
-    
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    setIsLoading(false);
+    setIsSuccess(true);
+
     // Redirect to login after delay
     setTimeout(() => {
-      router.push('/login')
-    }, 2000)
-  }
+      router.push('/login');
+    }, 2000);
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
@@ -57,9 +59,7 @@ export default function ResetPasswordPage() {
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-semibold">Reset password</CardTitle>
           <CardDescription>
-            {isSuccess
-              ? 'Your password has been reset'
-              : 'Enter your new password'}
+            {isSuccess ? 'Your password has been reset' : 'Enter your new password'}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -75,11 +75,7 @@ export default function ResetPasswordPage() {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="password">New Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  {...register('password')}
-                />
+                <Input id="password" type="password" {...register('password')} />
                 {errors.password && (
                   <p className="text-sm text-destructive">{errors.password.message}</p>
                 )}
@@ -87,11 +83,7 @@ export default function ResetPasswordPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="confirmPassword">Confirm Password</Label>
-                <Input
-                  id="confirmPassword"
-                  type="password"
-                  {...register('confirmPassword')}
-                />
+                <Input id="confirmPassword" type="password" {...register('confirmPassword')} />
                 {errors.confirmPassword && (
                   <p className="text-sm text-destructive">{errors.confirmPassword.message}</p>
                 )}
@@ -112,5 +104,5 @@ export default function ResetPasswordPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
