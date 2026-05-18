@@ -4,11 +4,14 @@ import type { CreateUserPayload } from '@/types/api';
 import type { User, UserRole } from '@/types/user';
 
 import { usersApi } from '@/lib/api/users.api';
+import { profileApi } from '@/lib/api/profiles.api';
 import { ApiException } from '@/lib/api/errors';
 
 interface UsersState {
   users: User[];
   isLoading: boolean;
+
+  usersWithProfiles: Set<string>;
 
   loadUsers: () => Promise<void>;
 
@@ -19,20 +22,32 @@ interface UsersState {
   toggleUserActive: (userId: string) => Promise<{ success: boolean; error?: string }>;
 
   deleteUser: (userId: string) => Promise<{ success: boolean; error?: string }>;
+
+  hasProfile: (userId: string) => boolean;
 }
 
 export const useUsersStore = create<UsersState>((set, get) => ({
   users: [],
   isLoading: false,
 
-  // LOAD USERS
+  usersWithProfiles: new Set(),
 
+  // LOAD USERS + PROFILES
   loadUsers: async () => {
     set({ isLoading: true });
 
     try {
-      const users = await usersApi.getUsers();
-      set({ users, isLoading: false });
+      const [users, profiles] = await Promise.all([usersApi.getUsers(), profileApi.getProfiles()]);
+
+      const userIds = profiles.map((p) => p.user_id).filter((id): id is string => Boolean(id));
+
+      const usersWithProfiles = new Set(userIds);
+
+      set({
+        users,
+        usersWithProfiles,
+        isLoading: false,
+      });
     } catch (err) {
       if (err instanceof ApiException) {
         console.log(err.code);
@@ -43,7 +58,6 @@ export const useUsersStore = create<UsersState>((set, get) => ({
   },
 
   // CREATE USER
-
   createUser: async (data) => {
     set({ isLoading: true });
 
@@ -65,8 +79,7 @@ export const useUsersStore = create<UsersState>((set, get) => ({
     }
   },
 
-  // UPDATE ROLE (endpoint updateUser y mantiene contrato v0)
-
+  // UPDATE ROLE
   updateUserRole: async (userId, role) => {
     try {
       const updated = await usersApi.updateUser(userId, { role });
@@ -84,8 +97,7 @@ export const useUsersStore = create<UsersState>((set, get) => ({
     }
   },
 
-  // TOGGLE ACTIVE (endpoint updateUser y mantiene contrato v0)
-
+  // TOGGLE ACTIVE
   toggleUserActive: async (userId) => {
     try {
       const user = get().users.find((u) => u.id === userId);
@@ -109,7 +121,6 @@ export const useUsersStore = create<UsersState>((set, get) => ({
   },
 
   // DELETE USER
-
   deleteUser: async (userId) => {
     set({ isLoading: true });
 
@@ -130,5 +141,10 @@ export const useUsersStore = create<UsersState>((set, get) => ({
         error: err instanceof ApiException ? err.message : 'Error deleting user',
       };
     }
+  },
+
+  // HAS PROFILE
+  hasProfile: (userId: string) => {
+    return get().usersWithProfiles.has(userId);
   },
 }));

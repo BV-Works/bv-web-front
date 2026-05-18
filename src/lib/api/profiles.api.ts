@@ -47,6 +47,12 @@ export const profileApi = {
     return unwrapResponse(res.data);
   },
 
+  getProfileByUserId: async (userId: string): Promise<Profile> => {
+    const res = await api.get<ApiResponse<Profile>>(`/profiles/user/${userId}`);
+
+    return unwrapResponse(res.data);
+  },
+
   createProfile: async (data: CreateProfilePayload): Promise<Profile> => {
     const res = await api.post<ApiResponse<Profile>>('/profiles', data);
     return unwrapResponse(res.data);
