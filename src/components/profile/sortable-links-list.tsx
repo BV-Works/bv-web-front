@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
+import { useState } from 'react';
 import {
   DndContext,
   closestCenter,
@@ -9,41 +9,36 @@ import {
   useSensor,
   useSensors,
   type DragEndEvent,
-} from '@dnd-kit/core'
+} from '@dnd-kit/core';
 import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   useSortable,
   verticalListSortingStrategy,
-} from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
-import { GripVertical, Pencil } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { getPlatformLabel } from '@/components/profile/link-button'
-import type { Link } from '@/types'
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import { GripVertical, Pencil } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { getPlatformLabel } from '@/components/profile/link-button';
+import type { Link } from '@/types';
 
 interface SortableLinkItemProps {
-  link: Link
-  onEdit: (link: Link) => void
+  link: Link;
+  onEdit: (link: Link) => void;
 }
 
 function SortableLinkItem({ link, onEdit }: SortableLinkItemProps) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: link.id })
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: link.id,
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
     opacity: isDragging ? 0.5 : 1,
     zIndex: isDragging ? 1 : 0,
-  }
+  };
 
   return (
     <div
@@ -68,27 +63,23 @@ function SortableLinkItem({ link, onEdit }: SortableLinkItemProps) {
           {!link.is_visible && ' (hidden)'}
         </p>
       </div>
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={() => onEdit(link)}
-      >
+      <Button variant="ghost" size="icon" onClick={() => onEdit(link)}>
         <Pencil className="h-4 w-4" />
       </Button>
     </div>
-  )
+  );
 }
 
 interface SortableLinksListProps {
-  links: Link[]
-  onReorder: (links: Link[]) => void
-  onEdit: (link: Link) => void
+  links: Link[];
+  onReorder: (links: Link[]) => void;
+  onEdit: (link: Link) => void;
 }
 
 export function SortableLinksList({ links, onReorder, onEdit }: SortableLinksListProps) {
-  const [activeId, setActiveId] = useState<string | null>(null)
-  
-  const sortedLinks = [...links].sort((a, b) => a.position - b.position)
+  const [activeId, setActiveId] = useState<string | null>(null);
+
+  const sortedLinks = [...links].sort((a, b) => a.position - b.position);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -99,26 +90,24 @@ export function SortableLinksList({ links, onReorder, onEdit }: SortableLinksLis
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
-  )
+  );
 
   const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event
-    setActiveId(null)
+    const { active, over } = event;
+    setActiveId(null);
 
     if (over && active.id !== over.id) {
-      const oldIndex = sortedLinks.findIndex((link) => link.id === active.id)
-      const newIndex = sortedLinks.findIndex((link) => link.id === over.id)
+      const oldIndex = sortedLinks.findIndex((link) => link.id === active.id);
+      const newIndex = sortedLinks.findIndex((link) => link.id === over.id);
 
-      const reorderedLinks = arrayMove(sortedLinks, oldIndex, newIndex).map(
-        (link, index) => ({
-          ...link,
-          position: index,
-        })
-      )
+      const reorderedLinks = arrayMove(sortedLinks, oldIndex, newIndex).map((link, index) => ({
+        ...link,
+        position: index,
+      }));
 
-      onReorder(reorderedLinks)
+      onReorder(reorderedLinks);
     }
-  }
+  };
 
   return (
     <DndContext
@@ -135,5 +124,5 @@ export function SortableLinksList({ links, onReorder, onEdit }: SortableLinksLis
         </div>
       </SortableContext>
     </DndContext>
-  )
+  );
 }

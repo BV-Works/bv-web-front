@@ -1,12 +1,12 @@
-'use client'
+'use client';
 
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { Plus, Trash2, User as UserIcon, ExternalLink } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Switch } from '@/components/ui/switch'
-import { Skeleton } from '@/components/ui/skeleton'
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Plus, Trash2, User as UserIcon, ExternalLink } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
   TableBody,
@@ -14,67 +14,67 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
+} from '@/components/ui/table';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { CreateUserModal } from '@/components/modals/create-user-modal'
-import { ConfirmModal } from '@/components/modals/confirm-modal'
-import { useUsersStore } from '@/lib/stores/users.store'
+} from '@/components/ui/select';
+import { CreateUserModal } from '@/components/modals/create-user-modal';
+import { ConfirmModal } from '@/components/modals/confirm-modal';
+import { useUsersStore } from '@/lib/stores/users.store';
 import type { User, UserRole } from '@/types/user';
 
-
 export default function UsersPage() {
-  const router = useRouter()
-  const { users, isLoading, loadUsers, updateUserRole, toggleUserActive, deleteUser } = useUsersStore()
-  const [createModalOpen, setCreateModalOpen] = useState(false)
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false)
-  const [roleModalOpen, setRoleModalOpen] = useState(false)
-  const [selectedUser, setSelectedUser] = useState<User | null>(null)
-  const [pendingRole, setPendingRole] = useState<UserRole | null>(null)
-  const { hasProfile } = useUsersStore()
+  const router = useRouter();
+  const { users, isLoading, loadUsers, updateUserRole, toggleUserActive, deleteUser } =
+    useUsersStore();
+  const [createModalOpen, setCreateModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [roleModalOpen, setRoleModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [pendingRole, setPendingRole] = useState<UserRole | null>(null);
+  const { hasProfile } = useUsersStore();
 
   useEffect(() => {
-    loadUsers()
-  }, [loadUsers])
+    loadUsers();
+  }, [loadUsers]);
 
   const handleRoleChange = (user: User, role: UserRole) => {
-    setSelectedUser(user)
-    setPendingRole(role)
-    setRoleModalOpen(true)
-  }
+    setSelectedUser(user);
+    setPendingRole(role);
+    setRoleModalOpen(true);
+  };
 
   const confirmRoleChange = async () => {
     if (selectedUser && pendingRole) {
-      await updateUserRole(selectedUser.id, pendingRole)
+      await updateUserRole(selectedUser.id, pendingRole);
     }
-    setPendingRole(null)
-    setSelectedUser(null)
-  }
+    setPendingRole(null);
+    setSelectedUser(null);
+  };
 
   const handleDeleteClick = (user: User) => {
-    setSelectedUser(user)
-    setDeleteModalOpen(true)
-  }
+    setSelectedUser(user);
+    setDeleteModalOpen(true);
+  };
 
   const confirmDelete = async () => {
     if (selectedUser) {
-      await deleteUser(selectedUser.id)
+      await deleteUser(selectedUser.id);
     }
-    setSelectedUser(null)
-  }
+    setSelectedUser(null);
+  };
 
   const handleToggleActive = async (user: User) => {
-    await toggleUserActive(user.id)
-  }
+    await toggleUserActive(user.id);
+  };
 
   const handleEditProfile = (user: User) => {
-    router.push(`/app/users/${user.id}`)
-  }
+    router.push(`/app/users/${user.id}`);
+  };
 
   if (isLoading && users.length === 0) {
     return (
@@ -82,7 +82,7 @@ export default function UsersPage() {
         <Skeleton className="h-10 w-48" />
         <Skeleton className="h-64" />
       </div>
-    )
+    );
   }
 
   return (
@@ -91,9 +91,7 @@ export default function UsersPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Users</h1>
-          <p className="text-muted-foreground">
-            Manage user accounts and permissions
-          </p>
+          <p className="text-muted-foreground">Manage user accounts and permissions</p>
         </div>
         <Button onClick={() => setCreateModalOpen(true)}>
           <Plus className="mr-2 h-4 w-4" />
@@ -122,7 +120,7 @@ export default function UsersPage() {
               </TableRow>
             ) : (
               users.map((user) => (
-                <TableRow 
+                <TableRow
                   key={user.id}
                   className="cursor-pointer hover:bg-muted/50"
                   onClick={() => handleEditProfile(user)}
@@ -189,10 +187,7 @@ export default function UsersPage() {
       </div>
 
       {/* Modals */}
-      <CreateUserModal
-        open={createModalOpen}
-        onOpenChange={setCreateModalOpen}
-      />
+      <CreateUserModal open={createModalOpen} onOpenChange={setCreateModalOpen} />
 
       <ConfirmModal
         open={roleModalOpen}
@@ -213,5 +208,5 @@ export default function UsersPage() {
         onConfirm={confirmDelete}
       />
     </div>
-  )
+  );
 }

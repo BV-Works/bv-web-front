@@ -1,19 +1,19 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils/utils'
-import { Key, LogOut } from 'lucide-react'
-import { User } from '@/types'
-import type { LucideIcon } from 'lucide-react'
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils/utils';
+import { Key, LogOut } from 'lucide-react';
+import { User } from '@/types';
+import type { LucideIcon } from 'lucide-react';
 
 interface Props {
-  navItems: { href: string; label: string; icon: LucideIcon }[]
-  pathname: string
-  setMobileOpen: (v: boolean) => void
-  user: User | null
-  setShowChangePassword: (v: boolean) => void
-  handleLogout: () => void
+  navItems: { href: string; label: string; icon: LucideIcon }[];
+  pathname: string;
+  setMobileOpen: (v: boolean) => void;
+  user: User | null;
+  setShowChangePassword: (v: boolean) => void;
+  handleLogout: () => void;
 }
 
 export function SidebarContent({
@@ -34,7 +34,7 @@ export function SidebarContent({
 
       <nav className="flex-1 space-y-1 p-4">
         {navItems.map((item) => {
-          const Icon = item.icon
+          const Icon = item.icon;
           return (
             <Link
               key={item.href}
@@ -50,7 +50,7 @@ export function SidebarContent({
               <Icon className="h-4 w-4" />
               {item.label}
             </Link>
-          )
+          );
         })}
       </nav>
 
@@ -81,5 +81,5 @@ export function SidebarContent({
         </Button>
       </div>
     </div>
-  )
+  );
 }
