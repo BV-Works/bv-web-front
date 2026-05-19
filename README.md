@@ -1,36 +1,347 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BV Web Frontend
 
-## Getting Started
+Frontend principal de la plataforma BV Web.
 
-First, run the development server:
+Aplicación desarrollada con:
+
+- Next.js App Router
+- TypeScript
+- TailwindCSS
+- Zustand
+- shadcn/ui
+- Arquitectura modular escalable tipo SaaS
+
+El frontend consume la API del backend BV Web y gestiona:
+
+- autenticación
+- dashboard admin
+- edición de perfiles
+- gestión de links
+- páginas públicas tipo Linktree
+- previews dinámicas
+- roles y permisos visuales
+
+---
+
+# Stack Tecnológico
+
+- Next.js 15
+- React 19
+- TypeScript
+- TailwindCSS
+- Zustand
+- Axios
+- shadcn/ui
+- Lucide Icons
+- dnd-kit
+- React Hook Form
+- Zod
+
+---
+
+# Estructura del Proyecto
+
+```txt
+app/
+├── (auth)/               # Login / auth pages
+├── app/                  # Dashboard privado
+│   ├── profile/          # Editor de perfil propio
+│   ├── users/            # Gestión de usuarios (ADMIN)
+│   └── users/[id]/       # Editor admin de perfiles
+├── artist/[slug]/        # Perfil público artist
+├── team/[slug]/          # Perfil público team
+└── api/                  # API routes si aplica
+
+components/
+├── ui/                   # shadcn/ui
+├── profile/              # Componentes de perfiles
+├── modals/               # Modales reutilizables
+└── layout/               # Layouts
+
+lib/
+├── api/                  # Cliente API
+├── stores/               # Zustand stores
+├── hooks/                # Hooks reutilizables
+├── utils/                # Helpers
+└── auth/                 # Auth helpers
+
+types/
+├── api.ts
+├── profile.ts
+├── user.ts
+└── link.ts
+```
+
+---
+
+# Arquitectura
+
+La aplicación sigue una arquitectura modular basada en:
+
+- separación clara UI / state / API
+- stores globales con Zustand
+- API layer centralizada
+- componentes reutilizables
+- separación entre:
+  - dashboard privado
+  - vistas públicas
+  - lógica de negocio
+
+---
+
+# Roles del Sistema
+
+## ADMIN
+
+Puede:
+
+- gestionar usuarios
+- editar perfiles de cualquier usuario
+- gestionar roles
+- activar/desactivar usuarios
+
+---
+
+## TEAM
+
+Puede:
+
+- editar su perfil
+- gestionar links
+- visualizar preview pública
+
+---
+
+## ARTIST
+
+Puede:
+
+- editar su perfil
+- gestionar links
+- visualizar preview pública
+
+---
+
+## CUSTOMER
+
+Actualmente:
+
+- acceso limitado
+- sin editor de perfil
+
+---
+
+# Sistema de Profiles
+
+El sistema separa:
+
+```txt
+User.role
+```
+
+de:
+
+```txt
+Profile.profile_type
+```
+
+Esto permite:
+
+- admins con perfil público
+- flexibilidad futura
+- separación entre permisos y representación pública
+
+---
+
+# Estado Global
+
+La aplicación utiliza Zustand para:
+
+- auth state
+- profiles
+- users
+- UI state
+
+Ejemplo:
+
+```txt
+useAuthStore
+useProfileStore
+useUsersStore
+```
+
+---
+
+# API Layer
+
+Toda la comunicación con backend se centraliza en:
+
+```txt
+lib/api/
+```
+
+Responsabilidades:
+
+- requests HTTP
+- manejo de tokens
+- unwrap responses
+- manejo de errores
+- tipado centralizado
+
+---
+
+# Flujo de Perfiles
+
+## Usuario
+
+```txt
+/app/profile
+```
+
+- edita su propio perfil
+- gestiona links
+- preview en tiempo real
+
+---
+
+## Admin
+
+```txt
+/app/users/[id]
+```
+
+- edita perfiles de otros usuarios
+- puede crear perfiles
+- gestión avanzada
+
+---
+
+# Sistema de Links
+
+Cada profile puede tener múltiples links:
+
+- spotify
+- instagram
+- youtube
+- twitch
+- tiktok
+- applemusic
+- custom
+
+Features:
+
+- reorder drag & drop
+- visibilidad
+- preview live
+- edición inline
+
+---
+
+# Variables de Entorno
+
+Crear:
+
+```txt
+.env.local
+```
+
+Ejemplo:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:3001/api
+```
+
+---
+
+# Instalación
+
+## 1. Instalar dependencias
+
+```bash
+npm install
+```
+
+---
+
+## 2. Ejecutar desarrollo
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 3. Build producción
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 4. Start producción
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+# Scripts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run dev
+npm run build
+npm run start
+npm run lint
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+# Estado Actual
+
+## MVP funcional
+
+Actualmente implementado:
+
+- auth JWT
+- dashboard admin
+- roles
+- profiles
+- links
+- páginas públicas
+- previews
+- drag & drop
+- stores globales
+- API typed layer
+
+---
+
+# Roadmap Próximo
+
+## Integraciones
+
+- Cloudinary
+- Resend
+
+---
+
+## Mejoras
+
+- QR automático por profile
+- mejoras visuales branding
+- permisos avanzados
+- observabilidad
+- hardening de seguridad
+- optimización loading state
+
+---
+
+# Objetivo del Proyecto
+
+Construir una plataforma moderna y escalable tipo:
+
+- Linktree
+- artista/team hub
+- perfiles públicos dinámicos
+- dashboard administrativo SaaS-ready
