@@ -43,30 +43,39 @@ El frontend consume la API del backend BV Web y gestiona:
 
 ```txt
 app/
-├── (auth)/               # Login / auth pages
+├── (linktree)/ 
+│   ├── artists/[slug]    # Pagina Perfil público artist
+│   └── team/[slug]       # Pagina Perfil público team
+├── (public)/
+│   ├── artists           # Pagina pública artists
+│   └── team              # Pagina pública team
+├── login/                # Login page
+├── forgot-password/      # Forgot password page
+├── reset-password/       # Reset password page
 ├── app/                  # Dashboard privado
 │   ├── profile/          # Editor de perfil propio
 │   ├── users/            # Gestión de usuarios (ADMIN)
-│   └── users/[id]/       # Editor admin de perfiles
-├── artist/[slug]/        # Perfil público artist
-├── team/[slug]/          # Perfil público team
-└── api/                  # API routes si aplica
-
-components/
-├── ui/                   # shadcn/ui
-├── profile/              # Componentes de perfiles
-├── modals/               # Modales reutilizables
-└── layout/               # Layouts
-
-lib/
-├── api/                  # Cliente API
-├── stores/               # Zustand stores
-├── hooks/                # Hooks reutilizables
-├── utils/                # Helpers
-└── auth/                 # Auth helpers
+│   │   └──/[id]/         # Editor admin de perfiles
+│ 
+├──components/
+│     ├── ui/                   # Componentes reutilizables
+│     ├── profile/              # Componentes de perfiles
+│     ├── modals/               # Modales reutilizables
+│     └── layout/               # Layouts
+│ 
+├──config/                   # Configuraciones de env.js
+│ 
+├──hooks/                    # Hooks reutilizables
+│ 
+├──lib/
+│     ├── api/                  # Cliente API
+│     ├── stores/               # Zustand stores        
+│     ├── utils/                # Helpers
 
 types/
+├── index.js
 ├── api.ts
+├── forms.ts
 ├── profile.ts
 ├── user.ts
 └── link.ts
