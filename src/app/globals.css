@@ -3,22 +3,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@font-face {
-  font-family: 'Helvetica Now Display';
-  src: url('/fonts/HelveticaNowDisplayRegular-5760477.ttf') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Stara';
-  src: url('/fonts/Stara-ExtraBold-BF659627090225d.otf') format('opentype');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
 :root {
   --background: #f5f5f5;
   --foreground: #000000;
@@ -53,8 +37,12 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  --font-sans: 'Helvetica Now Display', Helvetica, Arial, sans-serif;
-  --font-display: 'Stara', sans-serif;
+  --font-sans: var(--font-helvetica);
+  --font-display: var(--font-stara);
+  --color-paper-translucent: rgba(255, 255, 255, 0.4);
+  /* adaptar estos mas adelante */
+  --glass-bg: rgba(255, 255, 255, 0.4);
+  --glass-blur: 12px;
 }
 
 .dark {
@@ -129,6 +117,55 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Landing background image (Home + footer area on inner pages) */
+.bv-bg {
+  background: url('/img/DESCKTOP-LANDING-BACKGROUND.png') center / cover no-repeat;
+}
+
+/* ===================================================== */
+/* Decorative corner "+" crosses — signature brand mark  */
+/* Re-created from the original .corner pseudo-elements   */
+/* ===================================================== */
+.bv-corner {
+  position: absolute;
+  pointer-events: none;
+  --size: 1.3rem;
+  --thickness: 0.2rem;
+
+  /* revisar */
+  /* --corner-size: clamp(1rem, 1.5vw, 1.5rem);
+  --corner-thickness: 0.15rem; */
+}
+
+.bv-corner::before {
+  content: '';
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  background:
+    linear-gradient(var(--color-foreground), var(--color-foreground)) center / 100% var(--thickness)
+      no-repeat,
+    linear-gradient(var(--color-foreground), var(--color-foreground)) center / var(--thickness) 100%
+      no-repeat;
+}
+
+/* Hide native scrollbar on drag carousels (desktop) */
+.bv-carousel-track {
+  scrollbar-width: none;
+}
+.bv-carousel-track::-webkit-scrollbar {
+  display: none;
 }
 
 @layer base {
