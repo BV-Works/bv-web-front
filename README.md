@@ -43,7 +43,7 @@ El frontend consume la API del backend BV Web y gestiona:
 
 ```txt
 app/
-├── (linktree)/ 
+├── (linktree)/
 │   ├── artists/[slug]    # Pagina Perfil público artist
 │   └── team/[slug]       # Pagina Perfil público team
 ├── (public)/
@@ -56,20 +56,20 @@ app/
 │   ├── profile/          # Editor de perfil propio
 │   ├── users/            # Gestión de usuarios (ADMIN)
 │   │   └──/[id]/         # Editor admin de perfiles
-│ 
+│
 ├──components/
 │     ├── ui/                   # Componentes reutilizables
 │     ├── profile/              # Componentes de perfiles
 │     ├── modals/               # Modales reutilizables
 │     └── layout/               # Layouts
-│ 
+│
 ├──config/                   # Configuraciones de env.js
-│ 
+│
 ├──hooks/                    # Hooks reutilizables
-│ 
+│
 ├──lib/
 │     ├── api/                  # Cliente API
-│     ├── stores/               # Zustand stores        
+│     ├── stores/               # Zustand stores
 │     ├── utils/                # Helpers
 
 types/
