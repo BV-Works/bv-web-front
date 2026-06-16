@@ -1,6 +1,12 @@
 import { cn } from '@/lib/utils/utils';
 
-type CornerPosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'center-top';
+type CornerPosition =
+  | 'top-left'
+  | 'top-right'
+  | 'bottom-left'
+  | 'bottom-right'
+  | 'center-top'
+  | 'center-bottom';
 
 const POSITION_CLASSES: Record<CornerPosition, string> = {
   'top-left': 'top-2 left-2',
@@ -8,6 +14,7 @@ const POSITION_CLASSES: Record<CornerPosition, string> = {
   'bottom-left': 'bottom-7 left-2',
   'bottom-right': 'bottom-7 right-7',
   'center-top': 'top-2 left-1/2 -translate-x-1/2',
+  'center-bottom': 'bottom-7 left-1/2 -translate-x-1/2',
 };
 
 /**

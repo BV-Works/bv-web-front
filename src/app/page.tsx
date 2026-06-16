@@ -2,7 +2,7 @@ import { PublicShell } from '@/components/layout/public-shell';
 
 export default function HomePage() {
   return (
-    <PublicShell intro background variant="home">
+    <PublicShell variant="home">
       <section className="relative px-12 py-16 max-md:px-6">
         <div className="flex flex-col">
           <p

@@ -40,8 +40,6 @@
   --font-sans: var(--font-helvetica);
   --font-display: var(--font-stara);
   --color-paper-translucent: rgba(255, 255, 255, 0.4);
-  /* adaptar estos mas adelante */
-  --glass-bg: rgba(255, 255, 255, 0.4);
   --glass-blur: 12px;
 }
 
