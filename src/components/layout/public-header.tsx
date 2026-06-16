@@ -12,8 +12,8 @@ const NAV_LINKS = [
   { label: 'SERVICIOS', href: '/services' },
   { label: 'TEAM', href: '/team' },
   { label: 'ARTISTS', href: '/artists' },
-  { label: 'CONTACTO', href: '/contact' },
-  { label: 'FAQ', href: '/faq' },
+  // { label: 'CONTACTO', href: '/contact' },
+  // { label: 'FAQ', href: '/faq' },
 ];
 
 const SERVICE_LINKS = [
@@ -27,12 +27,6 @@ export function PublicHeader() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
-  // const navLinks = [
-  //   { href: '/', label: 'Home' },
-  //   { href: '/team', label: 'Team' },
-  //   { href: '/artists', label: 'Artists' },
-  // ];
-
   useEffect(() => {
     const onResize = () => {
       if (window.innerWidth > 768) setOpen(false);
@@ -42,34 +36,6 @@ export function PublicHeader() {
   }, []);
 
   return (
-    // <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-    //   <div className="container mx-auto flex h-16 items-center justify-between px-4">
-    //     <Link href="/" className="text-xl font-semibold tracking-tight">
-    //       Bajo Vigilancia
-    //     </Link>
-
-    //     <nav className="hidden items-center gap-6 md:flex">
-    //       {navLinks.map((link) => (
-    //         <Link
-    //           key={link.href}
-    //           href={link.href}
-    //           className={cn(
-    //             'text-sm font-medium transition-colors hover:text-foreground/80',
-    //             pathname === link.href ? 'text-foreground' : 'text-foreground/60'
-    //           )}
-    //         >
-    //           {link.label}
-    //         </Link>
-    //       ))}
-    //     </nav>
-
-    //     <div className="flex items-center gap-4">
-    //       <Button asChild variant="outline" size="sm">
-    //         <Link href="/login">Log in</Link>
-    //       </Button>
-    //     </div>
-    //   </div>
-    // </header>
     <header className="sticky top-0 z-10 flex min-h-[35vh] flex-none basis-auto items-start justify-end py-6 max-md:fixed max-md:right-0 max-md:min-h-0 md:basis-[260px]">
       <DecorativeCorners
         positions={['top-left', 'top-right', 'bottom-left', 'bottom-right']}
@@ -123,7 +89,7 @@ export function PublicHeader() {
       >
         <ul className="m-0 mr-4 flex list-none flex-col gap-2 p-0">
           {NAV_LINKS.map((item) => (
-            <div key={item.href} className="group text-right">
+            <div key={item.href} className="mt-6 pr-2 group text-right">
               <Link
                 href={item.href}
                 className={cn(
@@ -140,7 +106,7 @@ export function PublicHeader() {
                 <div
                   className={cn(
                     // base hidden desktop
-                    'hidden flex-col pr-2 text-right transition-all duration-300 ease-out',
+                    'hidden flex-col text-right transition-all duration-300 ease-out',
                     // desktop hover behavior
                     'md:group-hover:flex md:group-hover:max-h-[500px]',
                     // mobile: siempre visible dentro del panel abierto
@@ -151,7 +117,7 @@ export function PublicHeader() {
                     <Link
                       key={s.href}
                       href={s.href}
-                      className="text-sm text-foreground/70 hover:text-primary"
+                      className="block pt-6 font-display font-extrabold text-xl text-foreground/70 hover:text-primary"
                       onClick={() => setOpen(false)}
                     >
                       {s.label}
@@ -163,17 +129,14 @@ export function PublicHeader() {
           ))}
 
           {/* LOGIN (AJUSTAR ESTILOS) */}
-          <div className="mt-6 pr-2">
+          <div className="mt-6 mb-2 pr-2 group text-right">
             <Link
               href="/login"
-              className="block w-fit justify-self-end px-4 py-3 font-title text-[2.1rem] font-extrabold leading-none text-ink transition-colors hover:text-primary"
+              className="block font-display text-3xl font-extrabold leading-none transition-colors hover:text-primary"
               onClick={() => setOpen(false)}
             >
               LOGIN
             </Link>
-            {/* <Button asChild variant="outline" size="sm">
-         <Link href="/login">Log in</Link>
-       </Button> */}
           </div>
         </ul>
       </nav>
