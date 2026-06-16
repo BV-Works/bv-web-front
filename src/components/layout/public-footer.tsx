@@ -61,7 +61,7 @@ export function PublicFooter({ variant = 'corporate' }: { variant?: 'home' | 'co
           {/* External SoundBetter badge */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            alt="BajoVigilancia Music, Mastering Engineer on SoundBetter"
+            alt="BajoVigilancia Music, Mixing and Mastering Engineer on SoundBetter"
             src="https://d2p6ecj15pyavq.cloudfront.net/assets/SoundBetterBadge-c84cb3e75c4267f5bee41f7f617a81d9.svg"
             className="mx-auto w-16"
           />
