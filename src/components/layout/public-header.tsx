@@ -36,7 +36,7 @@ export function PublicHeader() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-10 flex min-h-[35vh] flex-none basis-auto items-start justify-end py-6 max-md:fixed max-md:right-0 max-md:min-h-0 md:basis-[260px]">
+    <header className="sticky top-0 z-10 flex min-h-[35vh] flex-none basis-auto items-start justify-end py-6 pl-16 max-md:fixed max-md:right-0 max-md:min-h-0 md:basis-[260px]">
       <DecorativeCorners
         positions={['top-left', 'top-right', 'bottom-left', 'bottom-right']}
         className="max-md:hidden"
@@ -87,7 +87,7 @@ export function PublicHeader() {
           open ? 'max-md:block' : 'max-md:hidden'
         )}
       >
-        <ul className="m-0 mr-4 flex list-none flex-col gap-2 p-0">
+        <ul className="m-0 pr-4 flex list-none flex-col gap-2 p-0">
           {NAV_LINKS.map((item) => (
             <div key={item.href} className="mt-6 pr-2 group text-right">
               <Link
@@ -128,8 +128,7 @@ export function PublicHeader() {
             </div>
           ))}
 
-          {/* LOGIN (AJUSTAR ESTILOS) */}
-          <div className="mt-6 mb-2 pr-2 group text-right">
+          <div className="mt-6 mb-4 pr-2 group text-right">
             <Link
               href="/login"
               className="block font-display text-3xl font-extrabold leading-none transition-colors hover:text-primary"

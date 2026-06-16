@@ -6,10 +6,6 @@ import { DecorativeCorners } from './decorative-corners';
 type PageStyle = 'home' | 'corporate';
 
 /**
- * Shared page shell reproducing the original `row-reverse` layout:
- * the vertical navigation sits on the right, content fills the left,
- * and the footer spans full width underneath.
- *
  * `PageStyle` controls the background and aligns the main block to the bottom (used on the Home page).
  */
 
@@ -27,26 +23,35 @@ export function PublicShell({
   //   const isHome = variant === 'home';
   return (
     <>
-      <div
-        className={cn(
-          'flex flex-1 flex-row-reverse items-start max-md:block',
-          background && 'bv-bg'
-        )}
-      >
-        <PublicHeader />
-        <main
-          className={cn(
-            'relative flex min-w-0 flex-1 flex-col max-md:w-full',
-            intro && 'place-self-end'
-          )}
+      <div className={cn('flex min-h-screen flex-col items-start', background && 'bv-bg')}>
+        <div
+          // className={cn(
+          //   'flex min-h-screen flex-row-reverse items-start max-md:block',
+          //   background && 'bv-bg'
+          // )}
+          className="flex flex-1 flex-row-reverse max-md:block"
         >
           <DecorativeCorners
             positions={['top-left', 'center-top', 'bottom-left', 'bottom-right']}
           />
-          {children}
-        </main>
+          <div>
+            <PublicHeader />
+          </div>
+          <div className="flex min-w-0 flex-1 flex-col">
+            <main
+              className={cn(
+                'relative flex min-w-0 flex-1 flex-col max-md:w-full',
+                intro && 'justify-end'
+              )}
+            >
+              {children}
+            </main>
+          </div>
+        </div>
+        <div className="flex w-full flex-none flex-col">
+          <PublicFooter variant={variant} />
+        </div>
       </div>
-      <PublicFooter variant={variant} />
     </>
   );
 }

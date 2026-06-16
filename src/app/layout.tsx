@@ -52,7 +52,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className={`${stara.variable} ${helvetica.variable}`}>
-      {/* <body className="flex min-h-screen flex-col font-sans"> */}
       <body className="flex min-h-screen flex-col font-sans antialiased bg-background text-foreground">
         {children}
       </body>

@@ -11,7 +11,7 @@ const POSITION_CLASSES: Record<CornerPosition, string> = {
 };
 
 /**
- * Signature decorative "+" corner marks from the original site.
+ * Signature decorative "+" corner marks for branding.
  * Rendered as absolutely-positioned elements inside a `relative` parent.
  */
 export function DecorativeCorners({
