@@ -13,6 +13,7 @@ export default function HomePage() {
           font-title 
           text-[clamp(4.5rem,11vw,8rem)] 
           font-extrabold leading-none 
+          font-display
           max-[830px]:w-full 
           max-[1100px]:text-[5rem] 
           max-[830px]:text-[4.3rem] 

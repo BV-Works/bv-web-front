@@ -33,11 +33,11 @@ export function PublicFooter({ variant = 'corporate' }: { variant?: 'home' | 'co
 
     <footer className={cn('relative text-center text-base', isHome ? 'bg-transparent' : 'bv-bg')}>
       <div className="flex flex-col items-center gap-2.5">
-        <p className="mb-0 mt-4 font-title text-xl font-bold">
+        <p className="mb-0 mt-4 font-display text-xl font-bold">
           <Link href="/">BAJO VIGILANCIA &copy;</Link>
         </p>
 
-        <div className="mx-4 mb-4 mt-2 flex flex-wrap justify-center gap-2.5">
+        <div className="mx-4 mb-3 mt-2 flex flex-wrap justify-center gap-2.5">
           {FOOTER_LINKS.map((label) => (
             <a
               key={label}
