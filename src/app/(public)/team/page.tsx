@@ -12,7 +12,7 @@ export default function TeamPage() {
     loadProfiles('TEAM');
   }, [loadProfiles]);
 
-return (
+  return (
     <section className="relative flex flex-1 flex-col justify-end px-12 py-16 max-md:px-6">
       <div className="w-full max-w-7xl">
         <div className="max-w-4xl pl-6">
@@ -21,7 +21,8 @@ return (
           </h1>
 
           <p className="mt-4 text-base italic text-muted-foreground">
-            Meet the people behind Bajo Vigilancia and discover the professionals shaping every project from concept to final delivery.
+            Meet the people behind Bajo Vigilancia and discover the professionals shaping every
+            project from concept to final delivery.
           </p>
         </div>
 
