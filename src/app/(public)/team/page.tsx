@@ -13,24 +13,28 @@ export default function TeamPage() {
   }, [loadProfiles]);
 
   return (
-    <div className="py-12">
-      <div className="container mx-auto px-4">
-        <div className="mb-12 text-center">
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Our Team</h1>
-          <p className="mt-4 text-muted-foreground">
-            Meet the people behind the scenes making the music happen.
+    <section className="relative flex flex-1 flex-col justify-end px-12 py-16 max-md:px-6">
+      <div className="w-full max-w-7xl">
+        <div className="max-w-4xl pl-6">
+          <h1 className="mb-4 font-display text-[clamp(4rem,9vw,7rem)] font-extrabold leading-none max-[1100px]:text-[5rem] max-[830px]:text-[4.2rem] max-[510px]:text-[3.3rem] text-balance">
+            TEAM
+          </h1>
+
+          <p className="mt-4 text-base italic text-muted-foreground">
+            Meet the people behind Bajo Vigilancia and discover the professionals shaping every
+            project from concept to final delivery.
           </p>
         </div>
 
         {isLoading ? (
-          <div className="flex gap-4 overflow-hidden">
+          <div className="mt-20 flex gap-4 overflow-hidden">
             {[1, 2, 3].map((i) => (
               <div key={i} className="min-w-[280px]">
                 <div className="rounded-lg border p-6">
                   <div className="flex flex-col items-center">
-                    <Skeleton className="h-24 w-24 rounded-full mb-4" />
-                    <Skeleton className="h-5 w-32 mb-2" />
-                    <Skeleton className="h-4 w-24 mb-3" />
+                    <Skeleton className="mb-4 h-24 w-24 rounded-full" />
+                    <Skeleton className="mb-2 h-5 w-32" />
+                    <Skeleton className="mb-3 h-4 w-24" />
                     <Skeleton className="h-4 w-48" />
                   </div>
                 </div>
@@ -40,9 +44,11 @@ export default function TeamPage() {
         ) : profiles.length === 0 ? (
           <p className="text-center text-muted-foreground">No profiles found</p>
         ) : (
-          <ProfileCarousel profiles={profiles} basePath="/team" />
+          <div className="mt-16">
+            <ProfileCarousel profiles={profiles} basePath="/team" />
+          </div>
         )}
       </div>
-    </div>
+    </section>
   );
 }

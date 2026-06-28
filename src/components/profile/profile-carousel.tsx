@@ -32,7 +32,7 @@ export function ProfileCarousel({ profiles, basePath }: ProfileCarouselProps) {
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
-      const scrollAmount = 320;
+      const scrollAmount = 352;
       scrollRef.current.scrollBy({
         left: direction === 'left' ? -scrollAmount : scrollAmount,
         behavior: 'smooth',
@@ -45,16 +45,28 @@ export function ProfileCarousel({ profiles, basePath }: ProfileCarouselProps) {
   }
 
   return (
-    <div className="relative">
+    <div className="relative overflow-visible px-0 md:px-6">
       {/* Scroll buttons */}
       {canScrollLeft && (
         <Button
           variant="outline"
           size="icon"
-          className="absolute left-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-background shadow-md hidden md:flex"
+          className="
+          absolute 
+          -left-3 md:-left-6
+          top-1/2
+          z-10
+          flex
+          h-10 w-10 md:h-12 md:w-12
+          -translate-y-1/2
+          rounded-none
+          bg-transparent
+          border-0
+          shadow-none
+          hover:bg-transparent"
           onClick={() => scroll('left')}
         >
-          <ChevronLeft className="h-4 w-4" />
+          <ChevronLeft className="h-7 w-7 md:h-8 md:w-8 stroke-[2.5]" />
         </Button>
       )}
 
@@ -62,10 +74,22 @@ export function ProfileCarousel({ profiles, basePath }: ProfileCarouselProps) {
         <Button
           variant="outline"
           size="icon"
-          className="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-background shadow-md hidden md:flex"
+          className="
+          absolute
+          -right-3 md:-right-6
+          top-1/2
+          z-10
+          flex
+          h-10 w-10 md:h-12 md:w-12
+          -translate-y-1/2
+          rounded-none
+          bg-transparent
+          border-0
+          shadow-none
+          hover:bg-transparent"
           onClick={() => scroll('right')}
         >
-          <ChevronRight className="h-4 w-4" />
+          <ChevronRight className="h-7 w-7 md:h-8 w-8 stroke-[2.5]" />
         </Button>
       )}
 
@@ -73,11 +97,10 @@ export function ProfileCarousel({ profiles, basePath }: ProfileCarouselProps) {
       <div
         ref={scrollRef}
         onScroll={checkScroll}
-        className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory md:px-8"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        className="bv-carousel-track flex gap-8 overflow-x-auto pb-4 px-2 md:px-10 lg:px-0 snap-x snap-proximity"
       >
         {profiles.map((profile) => (
-          <div key={profile.id} className="min-w-[280px] max-w-[280px] snap-start">
+          <div key={profile.id} className="min-w-[320px] max-w-[320px] snap-start">
             <ProfileCard profile={profile} basePath={basePath} />
           </div>
         ))}
