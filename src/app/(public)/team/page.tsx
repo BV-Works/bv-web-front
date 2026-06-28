@@ -43,7 +43,7 @@ return (
         ) : profiles.length === 0 ? (
           <p className="text-center text-muted-foreground">No profiles found</p>
         ) : (
-          <div className="mt-20">
+          <div className="mt-16">
             <ProfileCarousel profiles={profiles} basePath="/team" />
           </div>
         )}
