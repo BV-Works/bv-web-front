@@ -8,7 +8,7 @@ import { DecorativeCorners } from './decorative-corners';
 
 const NAV_LINKS = [
   { label: 'HOME', href: '/' },
-  // { label: 'SERVICIOS', href: '/services' },
+  { label: 'SERVICIOS', href: '/services' },
   { label: 'TEAM', href: '/team' },
   { label: 'ARTISTS', href: '/artists' },
   // { label: 'CONTACTO', href: '/contact' },

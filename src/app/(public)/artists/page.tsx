@@ -15,7 +15,7 @@ export default function ArtistsPage() {
   return (
     <section className="relative flex flex-1 flex-col justify-end px-12 py-16 max-md:px-6">
       <div className="w-full max-w-7xl">
-        <div className="pl-6 max-w-4xl">
+        <div className="max-w-4xl pl-0 md:pl-6">
           <h1 className="mb-4 font-display text-[clamp(4rem,9vw,7rem)] font-extrabold leading-none max-[1100px]:text-[5rem] max-[830px]:w-full max-[830px]:text-[4.2rem] max-[510px]:text-[3.3rem] text-balance">
             ARTISTS
           </h1>

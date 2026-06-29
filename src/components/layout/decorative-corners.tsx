@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils/utils';
 
-type CornerPosition =
+export type CornerPosition =
   | 'top-left'
   | 'top-right'
   | 'bottom-left'
