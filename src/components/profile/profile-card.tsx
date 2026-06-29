@@ -10,27 +10,31 @@ interface ProfileCardProps {
 
 export function ProfileCard({ profile, basePath }: ProfileCardProps) {
   return (
-    <Link href={`${basePath}/${profile.slug}`}>
-      <Card className="group overflow-hidden transition-all hover:shadow-md">
-        <CardContent className="p-6">
-          <div className="flex flex-col items-center text-center">
-            <Avatar className="h-24 w-24 mb-4">
+    <Link href={`${basePath}/${profile.slug}`} className="block h-full">
+      <Card className="group h-full overflow-hidden bg-[var(--color-paper-translucent)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+        <CardContent className="p-5 pt-6">
+          <div className="flex h-full flex-col">
+            <Avatar className="mb-5 h-28 w-28 border-2 border-foreground/10 transition-all duration-300 group-hover:border-primary">
               <AvatarImage src={profile.avatar_url ?? undefined} alt={profile.display_name} />
               <AvatarFallback className="text-2xl">
                 {profile.display_name.slice(0, 2).toUpperCase()}
               </AvatarFallback>
             </Avatar>
 
-            <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">
+            <h3 className="font-display text-xl font-extrabold leading-none tracking-tight hover:text-primary transition-colors">
               {profile.display_name}
             </h3>
 
             {profile.bio_slug && (
-              <p className="text-sm text-muted-foreground mt-1">{profile.bio_slug}</p>
+              <p className="mt-2 text-xs uppercase tracking-[0.18em] text-foreground/60">
+                {profile.bio_slug}
+              </p>
             )}
 
             {profile.bio_web && (
-              <p className="text-sm text-muted-foreground mt-3 line-clamp-2">{profile.bio_web}</p>
+              <p className="mt-4 line-clamp-3 text-sm leading-relaxed text-muted-foreground ">
+                {profile.bio_web}
+              </p>
             )}
           </div>
         </CardContent>
