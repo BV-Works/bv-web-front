@@ -70,6 +70,38 @@ export const profileApi = {
   },
 
   // -----------------------
+  // IMAGE UPLOAD
+  // -----------------------
+
+  uploadProfileImage: async (
+    profileId: string,
+    file: File,
+    type: 'avatar' | 'secondary'
+  ): Promise<{
+    profile: Profile;
+    uploadedUrl: string;
+    type: 'avatar' | 'secondary';
+  }> => {
+    const formData = new FormData();
+
+    formData.append('image', file);
+    formData.append('type', type);
+
+    const res = await api.post<
+      ApiResponse<{
+        profile: Profile;
+        uploadedUrl: string;
+        type: 'avatar' | 'secondary';
+      }>
+    >(`/profiles/${profileId}/image`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    return unwrapResponse(res.data);
+  },
+  // -----------------------
   // LINKS
   // -----------------------
 

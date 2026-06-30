@@ -48,6 +48,7 @@ export default function AdminUserProfilePage() {
     deleteLink,
     reorderLinks,
     saveChanges,
+    uploadProfileImage,
   } = useProfileStore();
 
   const [isSaving, setIsSaving] = useState(false);
@@ -60,6 +61,8 @@ export default function AdminUserProfilePage() {
   const [previewMode, setPreviewMode] = useState<'card' | 'linktree'>('linktree');
   const [isCreating, setIsCreating] = useState(false);
   const [newProfileType, setNewProfileType] = useState<ProfileType>('ARTIST');
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [uploadingSecondary, setUploadingSecondary] = useState(false);
 
   const user = users.find((u) => u.id === userId);
 
@@ -115,6 +118,38 @@ export default function AdminUserProfilePage() {
   const handleDeleteLink = () => {
     if (editingLink) {
       deleteLink(editingLink.id);
+    }
+  };
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (!file || !profile) return;
+
+    try {
+      setUploadingAvatar(true);
+
+      await uploadProfileImage(profile.id, file, 'avatar');
+    } finally {
+      setUploadingAvatar(false);
+
+      e.target.value = '';
+    }
+  };
+
+  const handleSecondaryImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (!file || !profile) return;
+
+    try {
+      setUploadingSecondary(true);
+
+      await uploadProfileImage(profile.id, file, 'secondary');
+    } finally {
+      setUploadingSecondary(false);
+
+      e.target.value = '';
     }
   };
 
@@ -300,7 +335,7 @@ export default function AdminUserProfilePage() {
                       placeholder="Short tagline..."
                     />
                   </div>
-                  <div className="space-y-2">
+                  {/* <div className="space-y-2">
                     <Label htmlFor="avatar_url">Avatar URL</Label>
                     <Input
                       id="avatar_url"
@@ -317,6 +352,45 @@ export default function AdminUserProfilePage() {
                       onChange={(e) => updateProfile({ secondary_image_url: e.target.value })}
                       placeholder="https://..."
                     />
+                  </div> */}
+                  <div className="space-y-2">
+                    <Label htmlFor="avatar">Avatar</Label>
+
+                    <div className="flex items-center gap-3">
+                      <Input
+                        id="avatar"
+                        type="file"
+                        accept="image/*"
+                        disabled={uploadingAvatar}
+                        onChange={handleAvatarUpload}
+                      />
+
+                      {uploadingAvatar && <Spinner className="h-5 w-5" />}
+                    </div>
+
+                    {profile.avatar_url && (
+                      <p className="text-xs text-muted-foreground truncate">Image uploaded</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="secondaryImage">Secondary Image</Label>
+
+                    <div className="flex items-center gap-3">
+                      <Input
+                        id="secondaryImage"
+                        type="file"
+                        accept="image/*"
+                        disabled={uploadingSecondary}
+                        onChange={handleSecondaryImageUpload}
+                      />
+
+                      {uploadingSecondary && <Spinner className="h-5 w-5" />}
+                    </div>
+
+                    {profile.secondary_image_url && (
+                      <p className="text-xs text-muted-foreground truncate">Image uploaded</p>
+                    )}
                   </div>
                 </CardContent>
               </CollapsibleContent>
@@ -433,7 +507,7 @@ export default function AdminUserProfilePage() {
                   />
                 </div>
               ) : (
-                <div className="border rounded-lg overflow-hidden max-h-[600px] overflow-y-auto">
+                <div className="bv-bg border rounded-lg overflow-hidden max-h-[600px] overflow-y-auto">
                   <LinktreeView profile={profile} links={links} />
                 </div>
               )}

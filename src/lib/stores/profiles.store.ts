@@ -36,6 +36,11 @@ interface ProfileState {
 
   createProfileForUser: (displayName: string, profileType: ProfileType) => Promise<Profile>;
   saveChanges: () => Promise<{ success: boolean; error?: string }>;
+  uploadProfileImage: (
+    profileId: string,
+    file: File,
+    type: 'avatar' | 'secondary'
+  ) => Promise<void>;
 }
 
 export const useProfileStore = create<ProfileState>((set, get) => ({
@@ -63,6 +68,32 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
       profile: { ...profile, ...updates },
       isDirty: true,
     });
+  },
+
+  uploadProfileImage: async (profileId, file, type) => {
+    const profile = get().profile;
+
+    if (!profile) {
+      return;
+    }
+
+    // set({ isLoading: true });
+
+    try {
+      const response = await profileApi.uploadProfileImage(profileId, file, type);
+
+      set({
+        profile: response.profile,
+        isLoading: false,
+        isDirty: true,
+      });
+    } catch (err) {
+      set({
+        isLoading: false,
+      });
+
+      console.error(err);
+    }
   },
 
   addLink: async (data) => {
