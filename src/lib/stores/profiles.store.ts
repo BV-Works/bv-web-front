@@ -115,11 +115,20 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
     });
   },
 
-  deleteLink: (id) => {
-    set({
-      links: get().links.filter((l) => l.id !== id),
-      isDirty: true,
-    });
+  deleteLink: async (id) => {
+    const { profile, links } = get();
+
+    if (!profile) return;
+
+    try {
+      await profileApi.deleteLink(profile.id, id);
+
+      set({
+        links: links.filter((l) => l.id !== id),
+      });
+    } catch (err) {
+      console.error(err);
+    }
   },
 
   reorderLinks: (links) => {

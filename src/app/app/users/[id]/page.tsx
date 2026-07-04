@@ -114,11 +114,10 @@ export default function AdminUserProfilePage() {
       addLink(data);
     }
   };
+  const handleDeleteLink = async () => {
+    if (!editingLink) return;
 
-  const handleDeleteLink = () => {
-    if (editingLink) {
-      deleteLink(editingLink.id);
-    }
+    await deleteLink(editingLink.id);
   };
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
