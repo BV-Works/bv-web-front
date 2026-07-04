@@ -230,6 +230,15 @@ export default function ProfileEditorPage() {
                     />
                   </div>
                   <div className="space-y-2">
+                    <Label htmlFor="bio_slug">Bio (Short)</Label>
+                    <Input
+                      id="bio_slug"
+                      value={profile.bio_slug ?? undefined}
+                      onChange={(e) => updateProfile({ bio_slug: e.target.value })}
+                      placeholder="Short tagline..."
+                    />
+                  </div>
+                  <div className="space-y-2">
                     <Label htmlFor="avatar">Avatar</Label>
 
                     <div className="flex flex-col sm:flex-row gap-3 sm:items-center">

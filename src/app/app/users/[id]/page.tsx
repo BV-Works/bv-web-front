@@ -334,24 +334,6 @@ export default function AdminUserProfilePage() {
                       placeholder="Short tagline..."
                     />
                   </div>
-                  {/* <div className="space-y-2">
-                    <Label htmlFor="avatar_url">Avatar URL</Label>
-                    <Input
-                      id="avatar_url"
-                      value={profile.avatar_url ?? undefined}
-                      onChange={(e) => updateProfile({ avatar_url: e.target.value })}
-                      placeholder="https://..."
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="secondary_image_url">Secondary Image URL</Label>
-                    <Input
-                      id="secondary_image_url"
-                      value={profile.secondary_image_url ?? undefined}
-                      onChange={(e) => updateProfile({ secondary_image_url: e.target.value })}
-                      placeholder="https://..."
-                    />
-                  </div> */}
                   <div className="space-y-2">
                     <Label htmlFor="avatar">Avatar</Label>
 
