@@ -235,7 +235,7 @@ export default function AdminUserProfilePage() {
             <p className="text-muted-foreground">Editing profile for {user?.email || 'user'}</p>
           </div>
         </div>
-        <Button onClick={handleSave} disabled={!isDirty || isSaving}>
+        <Button className="w-full sm:w-auto" onClick={handleSave} disabled={!isDirty || isSaving}>
           {isSaving ? <Spinner className="mr-2 h-4 w-4" /> : <Save className="mr-2 h-4 w-4" />}
           Save Changes
         </Button>
@@ -355,7 +355,7 @@ export default function AdminUserProfilePage() {
                   <div className="space-y-2">
                     <Label htmlFor="avatar">Avatar</Label>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
                       <Input
                         id="avatar"
                         type="file"
@@ -375,7 +375,7 @@ export default function AdminUserProfilePage() {
                   <div className="space-y-2">
                     <Label htmlFor="secondaryImage">Secondary Image</Label>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
                       <Input
                         id="secondaryImage"
                         type="file"

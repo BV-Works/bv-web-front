@@ -35,7 +35,7 @@ export function PublicHeader() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-10 flex min-h-[35vh] flex-none basis-auto items-start justify-end py-6 pl-16 max-md:fixed max-md:right-0 max-md:min-h-0 md:basis-[260px]">
+    <header className="sticky top-0 z-50 flex min-h-[35vh] flex-none basis-auto items-start justify-end py-6 pl-16 max-md:fixed max-md:right-0 max-md:min-h-0 md:basis-[260px]">
       <DecorativeCorners
         positions={['top-left', 'top-right', 'bottom-left', 'bottom-right']}
         className="max-md:hidden"

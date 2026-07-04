@@ -19,16 +19,17 @@ export function PublicShell({
   showHeader?: boolean;
 }) {
   const isHome = variant === 'home';
-  const positions: CornerPosition[] = ['top-left', 'center-top', 'bottom-left', 'bottom-right'];
+  const topPositions: CornerPosition[] = ['top-left', 'center-top'];
+  const bottomPositions: CornerPosition[] = ['bottom-left', 'bottom-right'];
 
   if (!showHeader) {
-    positions.push('top-right');
+    topPositions.push('top-right');
   }
   return (
     <>
       <div className={cn('flex min-h-screen flex-col', isHome && 'bv-bg')}>
         <div className="flex flex-1 flex-row-reverse max-md:block">
-          <DecorativeCorners positions={positions} />
+          <DecorativeCorners positions={topPositions} />
           {showHeader && (
             <div className="flex-none">
               <PublicHeader />
@@ -46,7 +47,8 @@ export function PublicShell({
             </main>
           </div>
         </div>
-        <div className="flex w-full flex-none flex-col">
+        <div className="relative flex w-full flex-none flex-col">
+          <DecorativeCorners positions={bottomPositions} />
           <PublicFooter variant={variant} />
         </div>
       </div>

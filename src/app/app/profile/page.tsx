@@ -10,6 +10,7 @@ import { Switch } from '@/components/ui/switch';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Spinner } from '@/components/ui/spinner';
+import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ProfileCard } from '@/components/profile/profile-card';
@@ -34,6 +35,7 @@ export default function ProfileEditorPage() {
     deleteLink,
     reorderLinks,
     saveChanges,
+    uploadProfileImage,
   } = useProfileStore();
 
   const [isSaving, setIsSaving] = useState(false);
@@ -44,6 +46,8 @@ export default function ProfileEditorPage() {
   const [linkModalOpen, setLinkModalOpen] = useState(false);
   const [editingLink, setEditingLink] = useState<Link | null>(null);
   const [previewMode, setPreviewMode] = useState<'card' | 'linktree'>('linktree');
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [uploadingSecondary, setUploadingSecondary] = useState(false);
 
   useEffect(() => {
     if (user?.id) {
@@ -75,9 +79,39 @@ export default function ProfileEditorPage() {
     }
   };
 
-  const handleDeleteLink = () => {
-    if (editingLink) {
-      deleteLink(editingLink.id);
+  const handleDeleteLink = async () => {
+    if (!editingLink) return;
+
+    await deleteLink(editingLink.id);
+  };
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (!file || !profile) return;
+
+    try {
+      setUploadingAvatar(true);
+
+      await uploadProfileImage(profile.id, file, 'avatar');
+    } finally {
+      setUploadingAvatar(false);
+      e.target.value = '';
+    }
+  };
+
+  const handleSecondaryImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (!file || !profile) return;
+
+    try {
+      setUploadingSecondary(true);
+
+      await uploadProfileImage(profile.id, file, 'secondary');
+    } finally {
+      setUploadingSecondary(false);
+      e.target.value = '';
     }
   };
 
@@ -112,10 +146,15 @@ export default function ProfileEditorPage() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Profile Editor</h1>
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-bold tracking-tight">{profile.display_name}</h1>
+
+            <Badge variant="secondary">{profile.profile_type}</Badge>
+          </div>
+
           <p className="text-muted-foreground">Manage your profile information and links</p>
         </div>
-        <Button onClick={handleSave} disabled={!isDirty || isSaving}>
+        <Button className="w-full sm:w-auto" onClick={handleSave} disabled={!isDirty || isSaving}>
           {isSaving ? <Spinner className="mr-2 h-4 w-4" /> : <Save className="mr-2 h-4 w-4" />}
           Save Changes
         </Button>
@@ -191,22 +230,43 @@ export default function ProfileEditorPage() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="bio_slug">Bio (Short)</Label>
-                    <Input
-                      id="bio_slug"
-                      value={profile.bio_slug ?? undefined}
-                      onChange={(e) => updateProfile({ bio_slug: e.target.value })}
-                      placeholder="Short tagline..."
-                    />
+                    <Label htmlFor="avatar">Avatar</Label>
+
+                    <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
+                      <Input
+                        id="avatar"
+                        type="file"
+                        accept="image/*"
+                        disabled={uploadingAvatar}
+                        onChange={handleAvatarUpload}
+                      />
+
+                      {uploadingAvatar && <Spinner className="h-5 w-5" />}
+                    </div>
+
+                    {profile.avatar_url && (
+                      <p className="text-xs text-muted-foreground truncate">Image uploaded</p>
+                    )}
                   </div>
+
                   <div className="space-y-2">
-                    <Label htmlFor="avatar_url">Avatar URL</Label>
-                    <Input
-                      id="avatar_url"
-                      value={profile.avatar_url ?? undefined}
-                      onChange={(e) => updateProfile({ avatar_url: e.target.value })}
-                      placeholder="https://..."
-                    />
+                    <Label htmlFor="secondaryImage">Secondary Image</Label>
+
+                    <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
+                      <Input
+                        id="secondaryImage"
+                        type="file"
+                        accept="image/*"
+                        disabled={uploadingSecondary}
+                        onChange={handleSecondaryImageUpload}
+                      />
+
+                      {uploadingSecondary && <Spinner className="h-5 w-5" />}
+                    </div>
+
+                    {profile.secondary_image_url && (
+                      <p className="text-xs text-muted-foreground truncate">Image uploaded</p>
+                    )}
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="secondary_image_url">Secondary Image URL</Label>
@@ -334,7 +394,8 @@ export default function ProfileEditorPage() {
                   />
                 </div>
               ) : (
-                <div className="border rounded-lg overflow-hidden max-h-[600px] overflow-y-auto">
+                <div className="bv-bg border rounded-lg overflow-hidden max-h-[500px] lg:max-h-[600px] overflow-y-auto">
+                  {' '}
                   <LinktreeView profile={profile} links={links} />
                 </div>
               )}

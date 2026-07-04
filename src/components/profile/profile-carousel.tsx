@@ -19,8 +19,11 @@ export function ProfileCarousel({ profiles, basePath }: ProfileCarouselProps) {
   const checkScroll = () => {
     if (scrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-      setCanScrollLeft(scrollLeft > 0);
-      setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 1);
+      const hasOverflow = scrollWidth > clientWidth + 1;
+      const threshold = 12;
+
+      setCanScrollLeft(hasOverflow && scrollLeft > threshold);
+      setCanScrollRight(hasOverflow && scrollLeft + clientWidth < scrollWidth - threshold);
     }
   };
 
@@ -55,7 +58,7 @@ export function ProfileCarousel({ profiles, basePath }: ProfileCarouselProps) {
           absolute 
           -left-3 md:-left-6
           top-1/2
-          z-10
+          z-20
           flex
           h-10 w-10 md:h-12 md:w-12
           -translate-y-1/2
@@ -78,7 +81,7 @@ export function ProfileCarousel({ profiles, basePath }: ProfileCarouselProps) {
           absolute
           -right-3 md:-right-6
           top-1/2
-          z-10
+          z-20
           flex
           h-10 w-10 md:h-12 md:w-12
           -translate-y-1/2
@@ -93,17 +96,27 @@ export function ProfileCarousel({ profiles, basePath }: ProfileCarouselProps) {
         </Button>
       )}
 
-      {/* Cards container */}
-      <div
-        ref={scrollRef}
-        onScroll={checkScroll}
-        className="bv-carousel-track flex gap-8 overflow-x-auto pb-4 px-2 md:px-10 lg:px-0 snap-x snap-proximity"
-      >
-        {profiles.map((profile) => (
-          <div key={profile.id} className="min-w-[320px] max-w-[320px] snap-start">
-            <ProfileCard profile={profile} basePath={basePath} />
-          </div>
-        ))}
+      <div className="relative overflow-hidden px-2 sm:px-10 md:px-0">
+        {canScrollLeft && (
+          <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-6 sm:w-10 md:w-16 lg:w-24 bg-gradient-to-r from-background via-background/70 to-transparent" />
+        )}
+
+        {canScrollRight && (
+          <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-6 sm:w-10 md:w-16 lg:w-24 bg-gradient-to-l from-background via-background/70 to-transparent" />
+        )}
+
+        {/* Cards container */}
+        <div
+          ref={scrollRef}
+          onScroll={checkScroll}
+          className="bv-carousel-track flex gap-8 overflow-x-auto pb-4 snap-x snap-proximity"
+        >
+          {profiles.map((profile) => (
+            <div key={profile.id} className="min-w-[316px] max-w-[316px] snap-start">
+              <ProfileCard profile={profile} basePath={basePath} />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
