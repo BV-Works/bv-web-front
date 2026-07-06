@@ -16,7 +16,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
-
+import { useAuthStore } from '@/lib/stores/auth.store';
 const schema = z
   .object({
     currentPassword: z.string().min(1, 'Current password is required'),
@@ -26,6 +26,10 @@ const schema = z
   .refine((data) => data.newPassword === data.confirmPassword, {
     message: "Passwords don't match",
     path: ['confirmPassword'],
+  })
+  .refine((data) => data.currentPassword !== data.newPassword, {
+    message: 'New password must be different from the current password',
+    path: ['newPassword'],
   });
 
 type FormData = z.infer<typeof schema>;
@@ -38,7 +42,7 @@ interface ChangePasswordModalProps {
 export function ChangePasswordModal({ open, onOpenChange }: ChangePasswordModalProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-
+  const { changePassword } = useAuthStore();
   const {
     register,
     handleSubmit,
@@ -52,34 +56,36 @@ export function ChangePasswordModal({ open, onOpenChange }: ChangePasswordModalP
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const result = await changePassword(data.currentPassword, data.newPassword);
 
-    // Mock validation - in real app this would check against actual password
-    if (
-      data.currentPassword !== 'admin123' &&
-      data.currentPassword !== 'team123' &&
-      data.currentPassword !== 'artist123'
-    ) {
-      setError('currentPassword', { message: 'Current password is incorrect' });
-      setIsLoading(false);
+    setIsLoading(false);
+
+    if (!result.success) {
+      if (result.error === 'New password must be different from the current password') {
+        setError('newPassword', { message: result.error });
+      } else {
+        setError('currentPassword', {
+          message: result.error ?? 'Current password is incorrect',
+        });
+      }
+
       return;
     }
 
     setSuccess(true);
-    setIsLoading(false);
 
     setTimeout(() => {
-      setSuccess(false);
       reset();
+      setSuccess(false);
       onOpenChange(false);
-    }, 1500);
+    }, 1200);
   };
 
   const handleClose = (newOpen: boolean) => {
     if (!newOpen) {
       reset();
       setSuccess(false);
+      setIsLoading(false);
     }
     onOpenChange(newOpen);
   };
