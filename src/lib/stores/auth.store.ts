@@ -15,6 +15,15 @@ interface AuthState {
   // AUTH ACTIONS
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
+  changePassword: (
+    currentPassword: string,
+    newPassword: string
+  ) => Promise<{ success: boolean; error?: string }>;
+  forgotPassword: (email: string) => Promise<{ success: boolean; error?: string }>;
+  resetPassword: (
+    token: string,
+    newPassword: string
+  ) => Promise<{ success: boolean; error?: string }>;
   checkAuth: () => Promise<void>;
   clearAuth: () => void;
 }
@@ -48,6 +57,70 @@ export const useAuthStore = create<AuthState>()(
           await authApi.logout();
         } finally {
           set({ user: null, isAuthenticated: false, isLoading: false, initialized: true });
+        }
+      },
+      changePassword: async (currentPassword, newPassword) => {
+        try {
+          set({ isLoading: true });
+
+          await authApi.changePassword({
+            currentPassword,
+            newPassword,
+          });
+
+          set({ isLoading: false });
+
+          return { success: true };
+        } catch (err) {
+          set({ isLoading: false });
+
+          return {
+            success: false,
+            error: err instanceof ApiException ? err.message : 'Unable to change password',
+          };
+        }
+      },
+      forgotPassword: async (email) => {
+        try {
+          set({ isLoading: true });
+
+          await authApi.forgotPassword(email);
+
+          set({ isLoading: false });
+
+          return {
+            success: true,
+          };
+        } catch (err) {
+          set({ isLoading: false });
+
+          return {
+            success: false,
+            error: err instanceof ApiException ? err.message : 'Unable to send reset email',
+          };
+        }
+      },
+      resetPassword: async (token, newPassword) => {
+        try {
+          set({ isLoading: true });
+
+          await authApi.resetPassword({
+            token,
+            newPassword,
+          });
+
+          set({ isLoading: false });
+
+          return {
+            success: true,
+          };
+        } catch (err) {
+          set({ isLoading: false });
+
+          return {
+            success: false,
+            error: err instanceof ApiException ? err.message : 'Unable to reset password',
+          };
         }
       },
       checkAuth: async () => {

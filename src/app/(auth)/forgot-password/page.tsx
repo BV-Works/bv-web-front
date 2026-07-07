@@ -14,6 +14,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { useAuthStore } from '@/lib/stores/auth.store';
 
 const schema = z.object({
   email: z.string().email('Please enter a valid email'),
@@ -25,7 +26,7 @@ export default function ForgotPasswordPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [cooldown, setCooldown] = useState(0);
-
+  const forgotPassword = useAuthStore((state) => state.forgotPassword);
   const {
     register,
     handleSubmit,
@@ -34,12 +35,17 @@ export default function ForgotPasswordPage() {
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = async () => {
+  const onSubmit = async (data: FormData) => {
     setLoading(true);
 
-    await new Promise((r) => setTimeout(r, 1000));
+    const result = await forgotPassword(data.email);
 
     setLoading(false);
+
+    if (!result.success) {
+      return;
+    }
+
     setSuccess(true);
     setCooldown(60);
 
@@ -62,8 +68,10 @@ export default function ForgotPasswordPage() {
           Forgot
         </CardTitle>
 
-        <CardDescription className="font-display tracking-wide">
-          {success ? 'Revisa tu correo electrónico.' : 'Recibe un enlace para recuperar acceso.'}
+        <CardDescription>
+          {success
+            ? 'If an account exists, you will receive an email shortly.'
+            : 'Enter your email to receive a password reset link.'}
         </CardDescription>
       </CardHeader>
 
