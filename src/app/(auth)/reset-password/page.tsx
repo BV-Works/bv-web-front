@@ -15,6 +15,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Spinner } from '@/components/ui/spinner';
+import { useSearchParams } from 'next/navigation';
+import { useAuthStore } from '@/lib/stores/auth.store';
 
 const schema = z
   .object({
@@ -34,6 +36,10 @@ export default function ResetPasswordPage() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const searchParams = useSearchParams();
+  const token = searchParams.get('token');
+
+  const resetPassword = useAuthStore((state) => state.resetPassword);
 
   const {
     register,
@@ -44,19 +50,36 @@ export default function ResetPasswordPage() {
   });
 
   const onSubmit = async (data: FormData) => {
+    if (!token) return;
+
     setIsLoading(true);
 
-    // TODO:
-    // conectar con API real
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const result = await resetPassword(token, data.password);
 
     setIsLoading(false);
+
+    if (!result.success) {
+      return;
+    }
+
     setIsSuccess(true);
 
     setTimeout(() => {
-      router.push('/login');
+      router.replace('/login');
     }, 2000);
   };
+
+  if (!token) {
+    return (
+      <Card className="w-full max-w-sm border-none bg-[var(--color-paper-translucent)] backdrop-blur-sm">
+        <CardContent className="p-8">
+          <Alert>
+            <AlertDescription>Invalid or missing reset token.</AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card
